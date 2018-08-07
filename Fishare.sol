@@ -5,6 +5,9 @@ contract Fishare {
   mapping(address => account) accounts;
 
   uint256 totalSupply_;
+  uint256 SharesSold_;
+  // Sale will end Dec 31 2018
+  uint256 SaleEndDate = 1546300799;
   address temp;
   struct account{
         uint balance;
@@ -34,6 +37,7 @@ contract Fishare {
        rate = _rate;
        wallet = _wallet;
        totalSupply_ = _initialSupply;
+       SharesSold_ = 0;
        limit = _limit;
    }
 
@@ -60,6 +64,10 @@ contract Fishare {
       return accounts[_address].registered;
   }
 
+  function getSharesSold() public view returns (uint256){
+      return SharesSold_;
+  }
+
   /**
   * @dev Transfer token for a specified address
   * @param _to The address to transfer to.
@@ -83,8 +91,6 @@ contract Fishare {
   function balanceOf(address _theowner) public view returns (uint256) {
     return accounts[_theowner].balance;
   }
-
-  //erc20basic
 
   event Transfer(address indexed from, address indexed to, uint256 value);
 
@@ -271,11 +277,27 @@ contract Fishare {
    * @dev low level token purchase ***DO NOT OVERRIDE***
    */
   function buyTokens () public payable {
+    require(now <= SaleEndDate);
     require(accounts[msg.sender].registered);
     uint256 numTokens;
     numTokens = _getTokenAmount(msg.value);
     require(accounts[msg.sender].balance + numTokens <= limit); 
+    require(SharesSold_ + numTokens <= totalSupply_);
     accounts[msg.sender].balance = accounts[msg.sender].balance + numTokens;
+    SharesSold_ = SharesSold_ + numTokens;
+  }
+  
+  /**
+   * @dev low level token purchase ***DO NOT OVERRIDE***
+   */
+  function SellTokens () public payable {
+    require(now <= SaleEndDate);
+    require(accounts[msg.sender].registered);
+    uint256 numTokens;
+    numTokens = _getTokenAmount(msg.value);
+    require(accounts[msg.sender].balance >= numTokens); 
+    accounts[msg.sender].balance = accounts[msg.sender].balance - numTokens;
+    SharesSold_ = SharesSold_ - numTokens;
   }
 
   // -----------------------------------------
@@ -301,3 +323,4 @@ contract Fishare {
     wallet.transfer(msg.value);
   }
 }
+
