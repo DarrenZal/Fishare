@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                
+                <title>Fishare</title>
+                <link href="css/app.css" rel="stylesheet">
+                    
+                    </head>
+    <body background = "css/FishBackground.png">
+        <header id="headerContainer">
+            <br/>&nbsp;&nbsp;<h1 class="text-center">Fishare</h1>&nbsp;&nbsp;<h2 class="text-center"> A Fair way to share fish</h1>&nbsp;&nbsp;
+                <a href="#registrationTag">Register</a>&nbsp;&nbsp;
+                <a href="#BuySharesTag">Claim Quota</a>&nbsp;&nbsp;
+                <a href="#TradeQuotaTag">Trade</a>&nbsp;&nbsp;
+                <a href="#tradeFishTag">Fish Market</a>&nbsp;&nbsp;
+                <a href="#transferSharesTag">Transfer</a>&nbsp;&nbsp;
+                </header>
+        <div class="container" id="Introduction">
+            
+            <h3 class="panel-title">
+                Fishare is a fishery network.<br/>
+                <br/>Fishers can trade the rights to catch a share of fish.<br/><br/>
+                Anyone can trade fish in a virtual market.
+                </h3>
+            Note: The software runs on the Ethereum blockchain (Ropsten testnet), and currently requires a web3 supported digital wallet such as <a href="https://metamask.io/" target="_blank">Metamask<a/>.
+            <div id="registrationTag"></div>
+            
+        </div>
+        <div class="container" id="Registration">
+            <u><B>Register</B></u><br/><br/>
+            In our virtual fishery anyone can register.  <br/><br/>
+            <div id="BuySharesTag"></div>
+            <button class="button register" type="button" id="register">&nbsp;Register&nbsp;</button><br/><br/>
+            Registration status:<output class="output" type="text" id="registrationstatus"/></output><br/><br/>
+        </div>
+        <div class="container" id="BuyShares">
+            <u><B>Claim Quota</B></u><br/><br/>
+            The total quota is 1,000,000 lbs of fish.<br/><br/>
+            There is a limit of 1000 lbs of fish per person.<br/><br/>
+            <strong>Number of fish quota shares to claim</strong>:<br/><br/>
+            <input type="number" id="shares"></input>&nbsp;&nbsp;
+            <button class="button buy" type="button" id="buy">&nbsp;Claim Shares&nbsp;</button><br/><br/>
+            Your quota share balance:<output class="output" type="number" id="balance"/></output><br/><br/>
+            <div id="TradeQuotaTag"></div>
+            Total quota shares claimed:<output class="output" type="number" id="outstanding"/></output><br/><br/>
+        </div>
+        <div class="container" id="Trade">
+            <br/><u><B>Quota Market</B></u>&nbsp;&nbsp;Buy or sell the rights to catch fish.<br/><br/>
+            <div id="container">
+                <button class="button tradeBuy" type="button" id="tradeBuy" >Buy</button>
+                <button class="button tradeSell" type="button" id="tradeSell">Sell</button>
+            </div><br/>
+            <div class="classbuy" id="idbuy" style="display:none;">
+                <div id="container2">
+                    <button class="button marketBuy" type="button" id="marketBuy"  >Market Buy</button>
+                    <button class="button limitBuy" type="button" id="limitBuy">Limit Buy</button>
+                    <div id="idmarketbuyNO" style="display:none;"><br/>
+                        There is nobody selling shares right now.<br/>  Click Limit Buy to post a buy order.
+                    </div>
+                    <div id="idmarketbuy" style="display:none;"><br/>
+                        Number of shares to buy:
+                        <input type="number" id="marketBuyShares" oninput="App.calcBuyMarketPrice()"/></input><br/><br/>
+                        Market Buy Price:
+                        <output class="output" type="number" id="marketprice1"/></output><br/><br/>
+                        Total Cost:
+                        <output class="output" type="number" id="marketBuyCost"/></output><br/><br/>
+                        <button class="button marketBuyExecute" type="button" id="marketBuyExecute">Buy</button>
+                    </div>
+                    <div id="idlimitbuy" style="display:none;"><br/>
+                        Buy Price:
+                        <input class="input" type="number" id="limitBuyPrice"/></output><br/><br/>
+                        Number of shares to buy:
+                        <input type="number" id="limitBuyShares"/></input><br/><br/>
+                        <button class="button limitBuyExecute" type="button" id="limitBuyExecute">Buy</button>
+                    </div>
+                </div><br/>
+            </div>
+            <div class="classsell" id="idsell" style="display:none;">
+                <div id="container3">
+                    <button class="button marketSell" type="button" id="marketSell" >Market Sell</button>
+                    <button class="button limitSell" type="button" id="limitSell" >Limit Sell</button>
+                    <div id="idmarketsellNO" style="display:none;"><br/>
+                        There is nobody buying shares right now.<br/>  Click Limit Sell to post a sell order.
+                    </div>
+                    <div id="idmarketsell" style="display:none;"><br/>
+                        Number of shares to sell:
+                        <input type="number" id="marketSellShares" oninput="App.calcSellMarketPrice()"/></input><br/><br/>
+                        Market Sell Price:
+                        <output class="output" type="number" id="marketprice2"/></output><br/><br/>
+                        Total wei to receive:
+                        <output class="output" type="number" id="marketSellValue"/></output><br/><br/>
+                        <button class="button marketSellExecute" type="button" id="marketSellExecute">Sell</button>
+                    </div>
+                    <div id="idlimitsell" style="display:block;"><br/>
+                        Sell Price:
+                        <input class="input" type="number" id="limitSellPrice"/></output><br/><br/>
+                        Number of Shares to sell:
+                        <input type="number" id="limitSellShares"/></input><br/><br/>
+                        <button class="button limitSellExecute" type="button" id="limitSellExecute">Sell</button>
+                    </div>
+                    <br>
+                </div><br/>
+            </div>
+            <div id="yourOrders" style="display:none;">
+                Your Orders:<br/>
+                <table style="width:100%" id="orderTable" style="display:none;">
+                    <tr>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Price</th>
+                        <th> </th>
+                    </tr>
+                </table>
+            </div>
+            <div id="orderChart" style="display:none;">
+                <output class="output" type="text" id="noShareOrderText"/></output><br/>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+                <canvas id="shareOrderChart"></canvas>
+            </div>
+        </div>
+        <div id="tradeFishTag"></div>
+        <div class="container" id="Market">
+            <br/><u><B>Fish Market</B></u>&nbsp;&nbsp; Buy or sell the ownership of fish.<br/><br/>
+            The market supports escrow, arbitration, and automatic tax collection.<br/><br/>
+            <div id="container4" class="container4">
+                <button class="escrowBuy" type="button" id="escrowBuy">Buy</button>
+                <button class="escrowSell" type="button" id="escrowSell">Sell</button>
+            </div><br/>
+            <div class="classbuy" id="idEscrowBuy" style="display:none;">
+                <div id="container5">
+                    <button class="escrowMarketBuy" type="button" id="escrowMarketBuy">Market Buy</button>
+                    <button class="escrowLimitBuy" type="button" id="escrowLimitBuy">Create Contract</button>
+                    <div id="idEscrowMarketBuyNO" style="display:none;"><br/>
+                        There are no open sell offers.<br/>  Click Create Contract to post a buy offer.
+                    </div>
+                    <div id="idEscrowLimitbuy" style="display:none;"><br/>
+                        Pounds of fish to buy:<br/> <input type="number" id="escrowBuyFishAmount"  oninput="App.calcEscrowBuyPrice()"/></input><br/><br/>
+                        Price per pound:<br/> <input type="number" id="escrowBuyFishPrice" oninput="App.calcEscrowBuyPrice()"/></input><br/><br/>
+                        Up front payment percentage (paid when both parties sign):<br/> <input type="number" id="escrowBuyUpFrontPercent"/></input><br/><br/>
+                        <strong>Address of seller (leave blank to advertise this offer):</strong><br/>
+                        <input type="text" class="phi" id="escrowBuyingSellerAddress"/></input><br/><br/>
+                        <strong>Address of arbiter (leave blank to arbitrate this contract yourself):</strong><br/>
+                        <input type="text" class="phi" id="escrowBuyArbiterAddress"/></input><br/><br/>
+                        <input type="checkbox" class="check" id="escrowBuyIncludeTax" oninput="App.calcEscrowBuyPrice()"/>Include Tax&nbsp;
+                        (<output class="output" type="number" id="taxRate"/></output>%)<br/><br/>
+                        Total Cost (wei):
+                        <output class="output" type="number" id="escrowBuyCost"/></output><br/><br/>
+                        <button class="escrowLimitBuyButton" type="button" id="escrowLimitBuyButton">&nbsp;Post Offer&nbsp;</button>
+                    </div>
+                </div><br/>
+            </div>
+            <div class="EscrowSell" id="idEscrowSell" style="display:none;">
+                <div id="container6">
+                    <button class="escrowMarketSell" type="button" id="escrowMarketSell" >Market Sell</button>
+                    <button class="escrowLimitSell" type="button" id="escrowLimitSell" >Create Contract</button>
+                    <div id="escrowMarketSellOnly" style="display:none;">
+                        <div id="idEscrowMarketsellNO" style="display:none;"><br/>
+                            There are no open buy offers.<br/>  Click Create Contract to post a sell offer.
+                        </div>
+                    </div>
+                    <div id="idEscrowLimitsell" style="display:none;"><br/>
+                        Pounds of fish to sell:<br/> <input type="number" id="escrowSellFishAmount" oninput="App.calcEscrowSellPrice()"/></input><br/><br/>
+                        Price per pound:<br/> <input type="number" id="escrowSellFishPrice" oninput="App.calcEscrowSellPrice()"/></input><br/><br/>
+                        Up front payment percentage (paid when both parties sign):<br/> <input type="text" id="escrowSellUpFrontPercent"/></input><br/><br/>
+                        <strong>Address of buyer (leave blank to advertise this offer):</strong><br/>
+                        <input type="text" class="phi" id="escrowSellingBuyerAddress"/></input><br/><br/>
+                        <strong>Address of arbiter (leave blank to arbitrate this contract yourself):</strong><br/>
+                        <input type="text" class="phi" id="escrowSellArbiterAddress"/></input><br/><br/>
+                        <input type="checkbox" class="check" id="escrowSellIncludeTax" oninput="App.calcEscrowSellPrice()"/>Include Tax&nbsp;
+                        (<output class="output" type="number" id="taxRate2"/></output>%)<br/><br/>
+                        Total Cost (wei):
+                        <output class="output" type="number" id="escrowSellCost"/></output><br/><br/>
+                        <button class="escrowLimitSellExecute" type="button" id="escrowLimitSellExecute">&nbsp;Post Offer&nbsp;</button>
+                    </div>
+                </div><br/>
+            </div>
+            <div id="openEscrowOrders" style="display:none;">
+                <output class="output" type="text" id="openEscrowOrdersHeader"/></output><br/>
+                <div id="escrowOpenBuyOrderTableVis"  style="display:none;">
+                    <table style="width:100%" id="escrowOpenBuyOrderTable">
+                        <tr>
+                            <th>ID</th>
+                            <th>Amount (lbs)</th>
+                            <th>Price (wei)</th>
+                            <th>% Up Front</th>
+                            <th> </th>
+                        </tr>
+                    </table>
+                </div>
+                <div id="escrowOpenSellOrderTableVis"  style="display:none;">
+                    <table style="width:100%" id="escrowOpenSellOrderTable">
+                        <tr>
+                            <th>ID</th>
+                            <th>Amount (lbs)</th>
+                            <th>Price (wei)</th>
+                            <th>% Up Front</th>
+                            <th> </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="yourEscrowOrders" style="display:none;">
+                <output class="output" type="text" id="noSignedEscrowOrders"/></output><br/>
+                <table style="width:100%" id="escrowSignedOrderTable">
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Amount (lbs)</th>
+                        <th>Price (wei)</th>
+                        <th>% Up Front</th>
+                        <th> </th>
+                    </tr>
+                </table>
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <b><output class="output modalHeader" type="text" id="modalHeader"/></output><br/></b><br/>
+                    <output class="output modalHeader" type="text" id="modalPrice"/></output>&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalAmount"/></output>&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalPercent"/></output>&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalTaxIncluded"/></output><br/>
+                    <output class="output modalHeader" type="text" id="modalseller"/></output><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<output class="output modalHeader" type="text" id="modalSellerSigned"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalSellerUnSigned"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalSellerDisputed"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalSellerReleased"/></output><br/>
+                    <output class="output modalHeader" type="text" id="modalBuyer"/></output><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<output class="output modalHeader" type="text" id="modalBuyerSigned"/></output>&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalBuyerUnSigned"/></output>&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalBuyerDisputed"/></output>&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalBuyerReleased"/></output><br/>
+                    <output class="output modalHeader" type="text" id="modalArbiter"/></output><br/><br/>
+                    
+                    
+                    
+                    
+                    <table style="width:100%" id="escrowOrderActionTableCounterPartySigs">
+                    </table>
+                    <table style="width:100%" id="escrowOrderActionTable">
+                        
+                        <tr>
+                            <th align="center"><div class="tooltip">&nbsp;&nbsp;&nbsp;?
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                            <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                            <th><div class="tooltip">&nbsp;&nbsp;&nbsp;?
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                            <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                            <th><div class="tooltip">&nbsp;&nbsp;&nbsp;?
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                            <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                            <th><div class="tooltip">?
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                            </div></th>
+                        </tr>
+                    </table>
+                    <div id="arbitrateFields" style="display:none;">
+                        <table id="escrowArbitrateFields">
+                            <tr align="center">
+                                <th align="left">Amount of Fish to to Seller:</th>
+                                <th><input class="input arbitrateFishSeller" type="number" id="arbitrateFishSeller"/></input></th>
+                            </tr>
+                            <tr align="center">
+                                <th align="left">Amount of fish to Buyer:</th>
+                                <th><input class="input arbitrateFishBuyer" type="number" id="arbitrateFishBuyer"/></input></th>
+                            </tr>
+                            <tr>
+                                <th align="left">Amount of payment to Seller:</th>
+                                <th><input class="input arbitratePaymentSeller" type="number" id="arbitratePaymentSeller"/></input></th>
+                            </tr>
+                            <tr>
+                                <th align="left">Amount of payment to Buyer:</th>
+                                <th><input class="input arbitratePaymentBuyer" type="number" id="arbitratePaymentBuyer"/></input></th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="transferSharesTag"></div>
+        <div class="container" id="transferShares">
+            <br/><u><B>Transfer Quota</B></u><br/><br/>
+            Number of quota shares you own:<output class="output" type="number" id="shareBalance"/></output><br/><br/>
+            <strong>Number of quota shares you wish to transfer</strong>:<br/>
+            <input type="number" id="transfershares"/></input><br/><br/>
+            <strong>Address to transfer to</strong>:<br/>
+            <input type="text" id="transferaddress"/></input><br/><br/>
+            <button class="transfer" type="button" id="transfer">&nbsp;Transfer Shares&nbsp;</button>
+        </div>
+        <div class="container" id="transOwnership">
+            <br/><u><B>Transfer Ownership</B></u><br/><br/>
+            Number of fish you own:<output class="output" type="number" id="numFishOwn"/></output><br/><br/>
+            <strong>Number of fish you wish to transfer</strong>:<br/>
+            <input type="number" class="phi" id="transferOwnership"/></input><br/><br/>
+            <strong>Address to transfer fish to:</strong><br/>
+            <input type="text" id="transferOwnershipAddress"/></input><br/><br/>
+            <button class="ownershipTransferButton" type="button" id="ownershipTransferButton">&nbsp;Transfer Ownership&nbsp;</button><br/>
+        </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/web3.min.js"></script>
+        <script src="js/truffle-contract.js"></script>
+        <script src="js/app.js"></script>
+        
+        
+    </body>
+    <footer id="footerContainer">
+        &nbsp;&nbsp;<a href="https://github.com/DarrenZal/Fishare" target="_blank">Source Code</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://medium.com/p/2b150a393ff1/edit" target="_blank">More Info</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;Feedback: zaldarren@gmail.com
+    </footer>
+</html>
