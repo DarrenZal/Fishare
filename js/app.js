@@ -47,950 +47,1024 @@ var submitArbitration = function(id){
     return function() {App.submitArbitration(id); };
 },
 App = {
-  web3Provider: null,
-  contracts: {},
-  init:
+web3Provider: null,
+contracts: {},
+init:
     function() {
-      return App.initWeb3();
-      
-  },
-
-  initWeb3: function() {
-      // Is there an injected web3 instance?
-      if (typeof web3 !== 'undefined') {
-          App.web3Provider = web3.currentProvider;
-      } else {
-          // If no injected web3 instance is detected, user Infura
-          App.web3Provider = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/4b559a9b6ed64477a68c49e426efebeb"));
-      }
-      web3 = new Web3(App.web3Provider);
+        return App.initWeb3();
+        
+    },
+    
+initWeb3: function() {
+    // Is there an injected web3 instance?
+    if (typeof web3 !== 'undefined') {
+        App.web3Provider = web3.currentProvider;
+    } else {
+        // If no injected web3 instance is detected, user Infura
+        App.web3Provider = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/4b559a9b6ed64477a68c49e426efebeb"));
+    }
+    web3 = new Web3(App.web3Provider);
     return App.initContract();
-  },
-
-  initContract: function() {
-                var ContractInstance;
-                const MyContract = web3.eth.contract([
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_forwardAddress",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "_forwardFunds",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_amountToSeller",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_amountToBuyer",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_paymentToSeller",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_paymentToBuyer",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "arbitrateEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "CancelLimitBuy",
-                                                       "outputs": [],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "CancelLimitSell",
-                                                       "outputs": [],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_numTokens",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "claimTokens",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_seller",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_buyer",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_arbiter",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_price",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_percentUpFront",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_taxIncluded",
-                                                                  "type": "bool"
-                                                                  }
-                                                                  ],
-                                                       "name": "createEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": true,
-                                                       "stateMutability": "payable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "disputeEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_numOrders",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_change",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "fillBuyOrders",
-                                                       "outputs": [],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_numOrders",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_change",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "fillSellOrders",
-                                                       "outputs": [],
-                                                       "payable": true,
-                                                       "stateMutability": "payable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_price",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "PostLimitBuy",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": true,
-                                                       "stateMutability": "payable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_price",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "PostLimitSell",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [],
-                                                       "name": "register",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "releaseEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "signEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": true,
-                                                       "stateMutability": "payable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_to",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "transfer",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_to",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "transferOwnership",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "unDisputeEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "unReleaseEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_index",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "unSignEscrow",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_lbPerShare",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_initialSupply",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_limit",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_taxRate",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_taxAddress",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "name": "_seasonBeginDate",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "name": "_seasonEndDate",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "payable": false,
-                                                       "stateMutability": "nonpayable",
-                                                       "type": "constructor"
-                                                       },
-                                                       {
-                                                       "anonymous": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_poster",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_value",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "PostBuyOrder",
-                                                       "type": "event"
-                                                       },
-                                                       {
-                                                       "anonymous": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_poster",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_value",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "PostSellOrder",
-                                                       "type": "event"
-                                                       },
-                                                       {
-                                                       "anonymous": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_registered",
-                                                                  "type": "address"
-                                                                  }
-                                                                  ],
-                                                       "name": "Register",
-                                                       "type": "event"
-                                                       },
-                                                       {
-                                                       "anonymous": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_from",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_to",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_value",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "Transfer",
-                                                       "type": "event"
-                                                       },
-                                                       {
-                                                       "anonymous": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_from",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_to",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_value",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "TransferOwnership",
-                                                       "type": "event"
-                                                       },
-                                                       {
-                                                       "anonymous": false,
-                                                       "inputs": [
-                                                                  {
-                                                                  "indexed": true,
-                                                                  "name": "_claimer",
-                                                                  "type": "address"
-                                                                  },
-                                                                  {
-                                                                  "indexed": false,
-                                                                  "name": "_amount",
-                                                                  "type": "uint256"
-                                                                  }
-                                                                  ],
-                                                       "name": "TokenClaim",
-                                                       "type": "event"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_theowner",
-                                                                  "type": "address"
-                                                                  }
-                                                                  ],
-                                                       "name": "balanceOf",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_theowner",
-                                                                  "type": "address"
-                                                                  }
-                                                                  ],
-                                                       "name": "balanceOfOwnership",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getBuyerEscrowSignatures",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getBuyOrders",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getEscrows",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getLbPerShare",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getSeasonBeginDate",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getSeasonEndDate",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getSellerEscrowSignatures",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool[]"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getSellOrders",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   },
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256[]"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getSharesClaimed",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getTaxAddress",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "getTaxRate",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [
-                                                                  {
-                                                                  "name": "_address",
-                                                                  "type": "address"
-                                                                  }
-                                                                  ],
-                                                       "name": "isRegistered",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "bool"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "lbPerShare",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "limit",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "owner",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "address"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       },
-                                                       {
-                                                       "constant": true,
-                                                       "inputs": [],
-                                                       "name": "totalSupply",
-                                                       "outputs": [
-                                                                   {
-                                                                   "name": "",
-                                                                   "type": "uint256"
-                                                                   }
-                                                                   ],
-                                                       "payable": false,
-                                                       "stateMutability": "view",
-                                                       "type": "function"
-                                                       }
-                                                      ]);
-      
-      App.contracts.Fishare = MyContract.at("0x8af527e0b1c25777300a017f14dff3eb21a31789");
-      var FishareInstance;
-      web3.eth.getAccounts(function(error, accounts) {
-                                     if (error) {
-                                     alert(error);
-                                     }
-                                     
-                                     var account = accounts[0];
-                                     App.contracts.Fishare.balanceOf(account, (err, result) => {
-                                                      document.getElementById("balance").innerHTML = result;
-                                                                     document.getElementById("shareBalance").innerHTML = result;
+},
+    
+initContract: function() {
+    var ContractInstance;
+    const MyContract = web3.eth.contract([
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_forwardAddress",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "_forwardFunds",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_amountToSeller",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_amountToBuyer",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_paymentToSeller",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_paymentToBuyer",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "arbitrateEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "CancelLimitBuy",
+                                          "outputs": [],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "CancelLimitSell",
+                                          "outputs": [],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_numTokens",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "claimTokens",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_seller",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_buyer",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_arbiter",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_price",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_percentUpFront",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_taxIncluded",
+                                                     "type": "bool"
+                                                     }
+                                                     ],
+                                          "name": "createEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": true,
+                                          "stateMutability": "payable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "disputeEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_numOrders",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_change",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "fillBuyOrders",
+                                          "outputs": [],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_numOrders",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_change",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "fillSellOrders",
+                                          "outputs": [],
+                                          "payable": true,
+                                          "stateMutability": "payable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_price",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "PostLimitBuy",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": true,
+                                          "stateMutability": "payable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_price",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "PostLimitSell",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [],
+                                          "name": "register",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "releaseEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "signEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": true,
+                                          "stateMutability": "payable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_to",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "transfer",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_to",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "transferOwnership",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "unDisputeEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "unReleaseEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": false,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "unSignEscrow",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "inputs": [
+                                                     {
+                                                     "name": "_lbPerShare",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_initialSupply",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_limit",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_taxRate",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_taxAddress",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "name": "_seasonBeginDate",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "name": "_seasonEndDate",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "payable": false,
+                                          "stateMutability": "nonpayable",
+                                          "type": "constructor"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_seller",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_buyer",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_arbiter",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_price",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_percentUpFront",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_taxIncluded",
+                                                     "type": "bool"
+                                                     }
+                                                     ],
+                                          "name": "escrowFinalized",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_index",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_amountToSeller",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_amountToBuyer",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_paymentToSeller",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_paymentToBuyer",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "escrowArbitrated",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_poster",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_value",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "PostBuyOrder",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_poster",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_value",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "PostSellOrder",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_registered",
+                                                     "type": "address"
+                                                     }
+                                                     ],
+                                          "name": "Register",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_from",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_to",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_value",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "Transfer",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_from",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_to",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_value",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "TransferOwnership",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "anonymous": false,
+                                          "inputs": [
+                                                     {
+                                                     "indexed": true,
+                                                     "name": "_claimer",
+                                                     "type": "address"
+                                                     },
+                                                     {
+                                                     "indexed": false,
+                                                     "name": "_amount",
+                                                     "type": "uint256"
+                                                     }
+                                                     ],
+                                          "name": "TokenClaim",
+                                          "type": "event"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_theowner",
+                                                     "type": "address"
+                                                     }
+                                                     ],
+                                          "name": "balanceOf",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_theowner",
+                                                     "type": "address"
+                                                     }
+                                                     ],
+                                          "name": "balanceOfOwnership",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getBuyerEscrowSignatures",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getBuyOrders",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "address[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getEscrows",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "address[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "address[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "address[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getLbPerShare",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getSeasonBeginDate",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getSeasonEndDate",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getSellerEscrowSignatures",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool[]"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getSellOrders",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "address[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      },
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256[]"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getSharesClaimed",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getTaxAddress",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "address"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "getTaxRate",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [
+                                                     {
+                                                     "name": "_address",
+                                                     "type": "address"
+                                                     }
+                                                     ],
+                                          "name": "isRegistered",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "bool"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "lbPerShare",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "limit",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "owner",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "address"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          },
+                                          {
+                                          "constant": true,
+                                          "inputs": [],
+                                          "name": "totalSupply",
+                                          "outputs": [
+                                                      {
+                                                      "name": "",
+                                                      "type": "uint256"
+                                                      }
+                                                      ],
+                                          "payable": false,
+                                          "stateMutability": "view",
+                                          "type": "function"
+                                          }
+                                          ]);
+    
+    App.contracts.Fishare = MyContract.at("0xcc279ec5c904c5c1d5840b9fe05deeef00357a7e");
+    var FishareInstance;
+    web3.eth.getAccounts(function(error, accounts) {
+                         if (error) {
+                         alert(error);
+                         }
+                         
+                         var account = accounts[0];
+                         App.contracts.Fishare.balanceOf(account, (err, result) => {
+                                                         document.getElementById("balance").innerHTML = result;
+                                                         document.getElementById("shareBalance").innerHTML = result;
+                                                         });
+                         App.contracts.Fishare.isRegistered(account, (err, result) => {
+                                                            if(result == true){
+                                                            document.getElementById("registrationstatus").innerHTML = "registered";
+                                                            } else document.getElementById("registrationstatus").innerHTML = "unregistered";
+                                                            });
+                         App.contracts.Fishare.getSharesClaimed((err, ClaimedShares) => {
+                                                                document.getElementById("outstanding").innerHTML = ClaimedShares;
                                                                 });
-                App.contracts.Fishare.isRegistered(account, (err, result) => {
-                                                                                   if(result == true){
-                                                                                   document.getElementById("registrationstatus").innerHTML = "registered";
-                                                                                   } else document.getElementById("registrationstatus").innerHTML = "unregistered";
-                                                                                   });
-                App.contracts.Fishare.getSharesClaimed((err, ClaimedShares) => {
-                                                                                   document.getElementById("outstanding").innerHTML = ClaimedShares;
-                                                                                   });
-                App.contracts.Fishare.balanceOfOwnership(account, (err, balance) => {
-                                                                                   document.getElementById("numFishOwn").innerHTML = balance;
-                                                                                   });
-                
-        });
-        App.getOrders();
-        App.getEscrowOrders();
-        App.getTaxRate();
-        return App.bindEvents();
-  },
-
-  bindEvents: function() {
+                         App.contracts.Fishare.balanceOfOwnership(account, (err, balance) => {
+                                                                  document.getElementById("numFishOwn").innerHTML = balance;
+                                                                  });
+                         
+                         });
+    App.getOrders();
+    App.getEscrowOrders();
+    App.getTaxRate();
+    return App.bindEvents();
+},
+    
+bindEvents: function() {
     $(document).on('click', '.buy', App.Buy);
     $(document).on('click', '.refresh', App.Refresh);
     $(document).on('click', '.register', App.Register);
@@ -1016,22 +1090,22 @@ App = {
     $(document).on('click', '.escrowMarketSellExecute', App.EscrowMarketSellExecute);
     $(document).on('click', '.ownershipTransferButton', App.TransferOwnership);
     $(document).on('click', '.transfer', App.Transfer);
-  },
-
-  getBalance: function(account) {
-      var FishareInstance;
-      web3.eth.getAccounts(function(error, accounts) {
-                           if (error) {
-                           alert(error);
-                            }
-                           var account = accounts[0];
-                           App.contracts.Fishare.isRegistered(account, (err, result) => {
-                                                                         if(result == true){
-                                                                         document.getElementById("registrationstatus").innerHTML = "registered";
-                                                                         } else document.getElementById("registrationstatus").innerHTML = "unregistered";
-                                                                         });
-                           });
-  },
+},
+    
+getBalance: function(account) {
+    var FishareInstance;
+    web3.eth.getAccounts(function(error, accounts) {
+                         if (error) {
+                         alert(error);
+                         }
+                         var account = accounts[0];
+                         App.contracts.Fishare.isRegistered(account, (err, result) => {
+                                                            if(result == true){
+                                                            document.getElementById("registrationstatus").innerHTML = "registered";
+                                                            } else document.getElementById("registrationstatus").innerHTML = "unregistered";
+                                                            });
+                         });
+},
 Register: function(event, ContractInstance) {
     event.preventDefault();
     web3.eth.getAccounts(function(error, accounts) {
@@ -1040,11 +1114,11 @@ Register: function(event, ContractInstance) {
                          }
                          var account = accounts[0];
                          App.contracts.Fishare.register((err, result) => {
-                                                                       App.contracts.Fishare.isRegistered(account, (err, result) => {
-                                                                               if(result == true){
-                                                                               document.getElementById("registrationstatus").innerHTML = "registered";
-                                                                               } else document.getElementById("registrationstatus").innerHTML = "unregistered";
-                                                                               });
+                                                        App.contracts.Fishare.isRegistered(account, (err, result) => {
+                                                                                           if(result == true){
+                                                                                           document.getElementById("registrationstatus").innerHTML = "registered";
+                                                                                           } else document.getElementById("registrationstatus").innerHTML = "unregistered";
+                                                                                           });
                                                         });
                          });
 },
@@ -1052,24 +1126,24 @@ Buy: function(event) {
     event.preventDefault();
     var shares = document.getElementById("shares").value;
     web3.eth.getAccounts(function(error, accounts) {
-                           if (error) {
-                           alert(error);
-                           }
-                           var account = accounts[0];
+                         if (error) {
+                         alert(error);
+                         }
+                         var account = accounts[0];
                          App.contracts.Fishare.limit((err, limit) => {
-                           App.contracts.Fishare.isRegistered(account, (err, result) => {
-                                                                                           if(result == true){
-                                                              App.contracts.Fishare.balanceOf(account, (err, balance) => {
-                                                                         if(parseInt(balance) + parseInt(shares)>limit){
-                                                                           alert("You cannot exceed the limit of 1000 lbs");
-                                                                           return;
-                                                                          } else
-                                                                    App.contracts.Fishare.claimTokens(shares, {from: account, gas: 800000}, (err, result) => {});
-                                                              });
-                                                            } else alert("You are not registered");
-                           });
+                                                     App.contracts.Fishare.isRegistered(account, (err, result) => {
+                                                                                        if(result == true){
+                                                                                        App.contracts.Fishare.balanceOf(account, (err, balance) => {
+                                                                                                                        if(parseInt(balance) + parseInt(shares)>limit){
+                                                                                                                        alert("You cannot exceed the limit of 1000 lbs");
+                                                                                                                        return;
+                                                                                                                        } else
+                                                                                                                        App.contracts.Fishare.claimTokens(shares, {from: account, gas: 800000}, (err, result) => {});
+                                                                                                                        });
+                                                                                        } else alert("You are not registered");
+                                                                                        });
                                                      });
-    });
+                         });
     
 },
 TradeBuyView: function(event) {
@@ -1119,22 +1193,22 @@ Transfer: function(event){
     var shares = document.getElementById("transfershares").value;
     var addressTo = document.getElementById("transferaddress").value;
     if(web3.isAddress(addressTo)){
-     web3.eth.getAccounts(function(error, accounts) {
-                          if (error) {
-                          alert(error);
-                          }
-                          var account = accounts[0];
-                          App.contracts.Fishare.balanceOf(account, (err, balance) => {
-                                                                        if(parseInt(balance) < parseInt(shares)){
-                                                                            alert("You do not have enough shares to transfer");
-                                                                            return;
-                                                                        } else App.contracts.Fishare.isRegistered(addressTo, (err, result) => {
-                                                                                if(result == false){
-                                                                                    alert("Address to transfer shares to is not registered.");
-                                                                                } else App.contracts.Fishare.transfer(addressTo, shares, {from: account, gas: 100000}, (err, result) => {});
-                                                                                 });
-                                                                        });
-                          });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             App.contracts.Fishare.balanceOf(account, (err, balance) => {
+                                                             if(parseInt(balance) < parseInt(shares)){
+                                                             alert("You do not have enough shares to transfer");
+                                                             return;
+                                                             } else App.contracts.Fishare.isRegistered(addressTo, (err, result) => {
+                                                                                                       if(result == false){
+                                                                                                       alert("Address to transfer shares to is not registered.");
+                                                                                                       } else App.contracts.Fishare.transfer(addressTo, shares, {from: account, gas: 100000}, (err, result) => {});
+                                                                                                       });
+                                                             });
+                             });
     } else {
         alert("Invalid Address");
     }
@@ -1146,18 +1220,18 @@ TransferOwnership: function(event){
     var numTransfer = document.getElementById("transferOwnership").value;
     var addressTo = document.getElementById("transferOwnershipAddress").value;
     if(web3.isAddress(addressTo)){
-    web3.eth.getAccounts(function(error, accounts) {
-                         if (error) {
-                         alert(error);
-                         }
-                         var account = accounts[0];
-                         App.contracts.Fishare.balanceOfOwnership(account, (err, balance) => {
-                                                                       if(parseInt(balance) < parseInt(numTransfer)){
-                                                                       alert("You do not own enough fish to transfer");
-                                                                       return;
-                                                                       } else App.contracts.Fishare.transferOwnership(addressTo, numTransfer, {from: account, gas: 100000}, (err, result) => {});
-                                                                  });
-                         });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             App.contracts.Fishare.balanceOfOwnership(account, (err, balance) => {
+                                                                      if(parseInt(balance) < parseInt(numTransfer)){
+                                                                      alert("You do not own enough fish to transfer");
+                                                                      return;
+                                                                      } else App.contracts.Fishare.transferOwnership(addressTo, numTransfer, {from: account, gas: 100000}, (err, result) => {});
+                                                                      });
+                             });
     } else {
         alert("Invalid Address");
     }
@@ -1170,32 +1244,32 @@ calcBuyMarketPrice: function(){
         alert("The total shares for sale is " + totalSellOrders);
         document.getElementById("marketBuyShares").value = totalSellOrders;
     } else {
-    web3.eth.getAccounts(function(error, accounts) {
-                         if (error) {
-                         alert(error);
-                         }
-                         var account = accounts[0];
-                         App.contracts.Fishare.getSellOrders((err, Orders) => {
-                                                                       sellOrderAmounts = Orders[1];
-                                                                       sellOrderPrices = Orders[2];
-                                                                       for (var i = sellOrderAmounts.length - 1; i >= 0; i--) {
-                                                                            if(parseInt(sharesRemaining) >= sellOrderAmounts[i]){
-                                                                               sharesRemaining = sharesRemaining - sellOrderAmounts[i];
-                                                                               totalCost = totalCost + sellOrderAmounts[i]*sellOrderPrices[i];
-                                                                           } else {
-                                                                               totalCost += sharesRemaining*sellOrderPrices[i];
-                                                                               break;
-                                                                           }
-                                                                       };
-                                                                       if(shares == null || shares.length == 0){
-                                                                           document.getElementById("marketprice1").innerHTML = sellOrderPrices[sellOrderPrices.length - 1] + " Wei";
-                                                                           document.getElementById("marketBuyCost").innerHTML = totalCost;
-                                                                           return;
-                                                                       }
-                                                                       document.getElementById("marketprice1").innerHTML = (totalCost/shares).toFixed(2) + " Wei";
-                                                                       document.getElementById("marketBuyCost").innerHTML = totalCost;
-                                                             });
-                         });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             App.contracts.Fishare.getSellOrders((err, Orders) => {
+                                                                 sellOrderAmounts = Orders[1];
+                                                                 sellOrderPrices = Orders[2];
+                                                                 for (var i = sellOrderAmounts.length - 1; i >= 0; i--) {
+                                                                 if(parseInt(sharesRemaining) >= sellOrderAmounts[i]){
+                                                                 sharesRemaining = sharesRemaining - sellOrderAmounts[i];
+                                                                 totalCost = totalCost + sellOrderAmounts[i]*sellOrderPrices[i];
+                                                                 } else {
+                                                                 totalCost += sharesRemaining*sellOrderPrices[i];
+                                                                 break;
+                                                                 }
+                                                                 };
+                                                                 if(shares == null || shares.length == 0){
+                                                                 document.getElementById("marketprice1").innerHTML = sellOrderPrices[sellOrderPrices.length - 1] + " Wei";
+                                                                 document.getElementById("marketBuyCost").innerHTML = totalCost;
+                                                                 return;
+                                                                 }
+                                                                 document.getElementById("marketprice1").innerHTML = (totalCost/shares).toFixed(2) + " Wei";
+                                                                 document.getElementById("marketBuyCost").innerHTML = totalCost;
+                                                                 });
+                             });
     }
 },
 calcSellMarketPrice: function(){
@@ -1206,32 +1280,32 @@ calcSellMarketPrice: function(){
         alert("The total number of shares to buy is " + totalBuyOrders);
         document.getElementById("marketSellShares").value = totalBuyOrders;
     } else {
-    web3.eth.getAccounts(function(error, accounts) {
-                         if (error) {
-                         alert(error);
-                         }
-                         var account = accounts[0];
-                         App.contracts.Fishare.getBuyOrders((err, Orders) => {
-                                                                       buyOrderAmounts = Orders[1];
-                                                                       buyOrderPrices = Orders[2];
-                                                                       for (var i = buyOrderAmounts.length - 1; i >= 0; i--) {
-                                                                           if(parseInt(sharesRemaining) > buyOrderAmounts[i]){
-                                                                               sharesRemaining = sharesRemaining - buyOrderAmounts[i];
-                                                                               totalCost = totalCost + buyOrderAmounts[i]*buyOrderPrices[i];
-                                                                           } else {
-                                                                               totalCost += sharesRemaining*buyOrderPrices[i];
-                                                                               break;
-                                                                           }
-                                                                       };
-                                                                       if(shares == null || shares.length == 0){
-                                                                           document.getElementById("marketprice2").innerHTML = buyOrderPrices[buyOrderPrices.length - 1] + " Wei";
-                                                                            document.getElementById("marketSellValue").innerHTML = totalCost;
-                                                                           return;
-                                                                       }
-                                                                       document.getElementById("marketprice2").innerHTML = (totalCost/shares).toFixed(2) + " Wei";
-                                                                       document.getElementById("marketSellValue").innerHTML = totalCost;
-                                                            });
-                         });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             App.contracts.Fishare.getBuyOrders((err, Orders) => {
+                                                                buyOrderAmounts = Orders[1];
+                                                                buyOrderPrices = Orders[2];
+                                                                for (var i = buyOrderAmounts.length - 1; i >= 0; i--) {
+                                                                if(parseInt(sharesRemaining) > buyOrderAmounts[i]){
+                                                                sharesRemaining = sharesRemaining - buyOrderAmounts[i];
+                                                                totalCost = totalCost + buyOrderAmounts[i]*buyOrderPrices[i];
+                                                                } else {
+                                                                totalCost += sharesRemaining*buyOrderPrices[i];
+                                                                break;
+                                                                }
+                                                                };
+                                                                if(shares == null || shares.length == 0){
+                                                                document.getElementById("marketprice2").innerHTML = buyOrderPrices[buyOrderPrices.length - 1] + " Wei";
+                                                                document.getElementById("marketSellValue").innerHTML = totalCost;
+                                                                return;
+                                                                }
+                                                                document.getElementById("marketprice2").innerHTML = (totalCost/shares).toFixed(2) + " Wei";
+                                                                document.getElementById("marketSellValue").innerHTML = totalCost;
+                                                                });
+                             });
     }
 },
 limitBuy: function(event){
@@ -1344,29 +1418,29 @@ marketBuyExecute: function(event){
                          }
                          var account = accounts[0];
                          App.contracts.Fishare.isRegistered(account, (err, result) => {
-                         if(result == true){
-                            App.contracts.Fishare.getSellOrders((err, Orders) => {
-                                                  sellOrderAddresses = Orders[0];
-                                                  sellOrderAmounts = Orders[1];
-                                                  sellOrderPrices = Orders[2];
-                                                  for (var i = sellOrderAmounts.length - 1; i >= 0; i--) {
-                                                      if(parseInt(sharesToFillRemaining) >= sellOrderAmounts[i]){
-                                                        numOrdersToFill++;
-                                                        sharesToFillRemaining = sharesToFillRemaining - sellOrderAmounts[i];
-                                                        payment += sellOrderAmounts[i]*sellOrderPrices[i];
-                                                      } else {
-                                                        numOrdersToFill++;
-                                                        change = sellOrderAmounts[i] - sharesToFillRemaining;
-                                                        sharesToFillRemaining = 0;
-                                                        payment += (sellOrderAmounts[i]-change)*sellOrderPrices[i];
-                                                        break;
-                                                      }
-                                                  };
-                                                  App.fillSellOrders(numOrdersToFill, change, payment);
-                                                  });
-                         } else alert("You are not registered");
+                                                            if(result == true){
+                                                            App.contracts.Fishare.getSellOrders((err, Orders) => {
+                                                                                                sellOrderAddresses = Orders[0];
+                                                                                                sellOrderAmounts = Orders[1];
+                                                                                                sellOrderPrices = Orders[2];
+                                                                                                for (var i = sellOrderAmounts.length - 1; i >= 0; i--) {
+                                                                                                if(parseInt(sharesToFillRemaining) >= sellOrderAmounts[i]){
+                                                                                                numOrdersToFill++;
+                                                                                                sharesToFillRemaining = sharesToFillRemaining - sellOrderAmounts[i];
+                                                                                                payment += sellOrderAmounts[i]*sellOrderPrices[i];
+                                                                                                } else {
+                                                                                                numOrdersToFill++;
+                                                                                                change = sellOrderAmounts[i] - sharesToFillRemaining;
+                                                                                                sharesToFillRemaining = 0;
+                                                                                                payment += (sellOrderAmounts[i]-change)*sellOrderPrices[i];
+                                                                                                break;
+                                                                                                }
+                                                                                                };
+                                                                                                App.fillSellOrders(numOrdersToFill, change, payment);
+                                                                                                });
+                                                            } else alert("You are not registered");
+                                                            });
                          });
-    });
 },
 fillSellOrders: function(numOrdersToFill, change, payment){
     web3.eth.getAccounts(function(error, accounts) {
@@ -1391,21 +1465,21 @@ marketSellExecute: function(event){
                          }
                          var account = accounts[0];
                          App.contracts.Fishare.getBuyOrders((err, Orders) => {
-                                                                       buyOrderAddresses = Orders[0];
-                                                                       buyOrderAmounts = Orders[1];
-                                                                       buyOrderPrices = Orders[2];
-                                                                       for (var i = buyOrderAmounts.length - 1; i >= 0; i--) {
-                                                                           if(parseInt(sharesToFillRemaining) >= buyOrderAmounts[i]){
-                                                                               numOrdersToFill++;
-                                                                               sharesToFillRemaining = sharesToFillRemaining - buyOrderAmounts[i];
-                                                                           } else {
-                                                                               numOrdersToFill++;
-                                                                               change = buyOrderAmounts[i] - sharesToFillRemaining;
-                                                                               sharesToFillRemaining = 0;
-                                                                               break;
-                                                                           }
-                                                                       };
-                                                                       App.fillBuyOrders(numOrdersToFill, change);
+                                                            buyOrderAddresses = Orders[0];
+                                                            buyOrderAmounts = Orders[1];
+                                                            buyOrderPrices = Orders[2];
+                                                            for (var i = buyOrderAmounts.length - 1; i >= 0; i--) {
+                                                            if(parseInt(sharesToFillRemaining) >= buyOrderAmounts[i]){
+                                                            numOrdersToFill++;
+                                                            sharesToFillRemaining = sharesToFillRemaining - buyOrderAmounts[i];
+                                                            } else {
+                                                            numOrdersToFill++;
+                                                            change = buyOrderAmounts[i] - sharesToFillRemaining;
+                                                            sharesToFillRemaining = 0;
+                                                            break;
+                                                            }
+                                                            };
+                                                            App.fillBuyOrders(numOrdersToFill, change);
                                                             });
                          });
 },
@@ -1427,24 +1501,24 @@ limitBuyExecute: function(event){
     } else if(shares.value.length == 0){
         alert("Number of shares to buy is blank");
     } else {
-    web3.eth.getAccounts(function(error, accounts) {
-                         if (error) {
-                         alert(error);
-                         }
-                         var account = accounts[0];
-                         App.contracts.Fishare.isRegistered(account, (err, result) => {
-                                                            if(result == true){
-                                                            App.contracts.Fishare.balanceOf(account, (err, balance) => {
-                                                                                            if(parseInt(balance) + parseInt(shares.value)>1000){
-                                                                                            alert("You cannot exceed the limit of 1000 lbs");
-                                                                                            return;
-                                                                                            } else
-                                                                                            App.contracts.Fishare.PostLimitBuy(shares.value, price.value, {from: account, gas: 200000, value: web3.toWei(cost, 'ether')}, (err, result) => {});
-                                                                                            });
-                                                            } else alert("You are not registered");
-                                                            });
-                         
-                         });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             App.contracts.Fishare.isRegistered(account, (err, result) => {
+                                                                if(result == true){
+                                                                App.contracts.Fishare.balanceOf(account, (err, balance) => {
+                                                                                                if(parseInt(balance) + parseInt(shares.value)>1000){
+                                                                                                alert("You cannot exceed the limit of 1000 lbs");
+                                                                                                return;
+                                                                                                } else
+                                                                                                App.contracts.Fishare.PostLimitBuy(shares.value, price.value, {from: account, gas: 200000, value: web3.toWei(cost, 'ether')}, (err, result) => {});
+                                                                                                });
+                                                                } else alert("You are not registered");
+                                                                });
+                             
+                             });
     };
 },
 getOrders: function(event, accounts){
@@ -1499,66 +1573,66 @@ getOrders: function(event, accounts){
                          alert(error);
                          }
                          var account = accounts[0];
-   
+                         
                          //set market price for selling if there are posted limit buy orders
                          App.contracts.Fishare.getBuyOrders((err, Orders) => {
-                                                                       if (Orders.length != 0){
-                                                                       buyMarketPrice = 0;
-                                                                       totalBuyOrders = 0;
-                                                                       addresses = Orders[0].toString();
-                                                                       addressesArray = addresses.split(',');
-                                                                       amounts = Orders[1].toString();
-                                                                       var chartOrders = [];
-                                                                       var chartOrderLabels = [];
-                                                                       amountsArray = amounts.split(',');
-                                                                       prices = Orders[2].toString();
-                                                                       pricesArray = prices.split(',');
-                                                                       
-                                                                       for (var i = 0; i < amountsArray.length ; i++) {
-
-                                                                            chartOrders = chartOrders.concat(parseInt(amountsArray[i]));
-                                                                            chartOrderLabels = chartOrderLabels.concat(pricesArray[i]);
-                                                                           chart.data.datasets[0].backgroundColor = chart.data.datasets[0].backgroundColor.concat("green");
-                                                                           if (pricesArray[i] > buyMarketPrice){
-                                                                               buyMarketPrice = pricesArray[i];
-                                                                           }
-                                                                           totalBuyOrders = totalBuyOrders + parseInt(amountsArray[i]);
-                                                                           if(addressesArray[i] == String(account)){
-                                                                           if (orderTableCounter < accountOrderLength){
-                                                                               var row = document.getElementById('BuyRow' + i);
-                                                                               row.childNodes[0].innerHTML = "Buy";
-                                                                               row.childNodes[1].innerHTML = amountsArray[i];
-                                                                               row.childNodes[2].innerHTML = pricesArray[i];
-                                                                           } else {
-                                                                               var row = table.insertRow(-1);
-                                                                               row.id = 'BuyRow' + i;
-                                                                               var cell1 = row.insertCell(0);
-                                                                               var cell2 = row.insertCell(1);
-                                                                               var cell3 = row.insertCell(2);
-                                                                               var cell4 = row.insertCell(3);
-                                                                               cell1.innerHTML = "Buy";
-                                                                               cell1.style.textAlign = "center";
-                                                                               cell2.innerHTML = amountsArray[i];
-                                                                               cell2.style.textAlign = "center";
-                                                                               cell3.innerHTML = pricesArray[i];
-                                                                               cell3.style.textAlign = "center";
-                                                                               var btn = document.createElement('input');
-                                                                               btn.type = "button";
-                                                                               btn.className = "tableBtn";
-                                                                               btn.value = "delete";
-                                                                               btn.onclick = cancelBuyOrder(i);
-                                                                               cell4.appendChild(btn);
-                                                                               cell4.style.textAlign = "center";
-                                                                               accountOrderLength++;
-                                                                           }
-                                                                           orderTableCounter++;
-                                                                           }
-                                                                       
-                                                                       };
-                                                                       chart.data.labels = chart.data.labels.concat(chartOrderLabels);
-                                                                       chart.data.datasets[0].data = chart.data.datasets[0].data.concat(chartOrders);
-                                                                       chart.update();
-                                                                       };
+                                                            if (Orders.length != 0){
+                                                            buyMarketPrice = 0;
+                                                            totalBuyOrders = 0;
+                                                            addresses = Orders[0].toString();
+                                                            addressesArray = addresses.split(',');
+                                                            amounts = Orders[1].toString();
+                                                            var chartOrders = [];
+                                                            var chartOrderLabels = [];
+                                                            amountsArray = amounts.split(',');
+                                                            prices = Orders[2].toString();
+                                                            pricesArray = prices.split(',');
+                                                            
+                                                            for (var i = 0; i < amountsArray.length ; i++) {
+                                                            
+                                                            chartOrders = chartOrders.concat(parseInt(amountsArray[i]));
+                                                            chartOrderLabels = chartOrderLabels.concat(pricesArray[i]);
+                                                            chart.data.datasets[0].backgroundColor = chart.data.datasets[0].backgroundColor.concat("green");
+                                                            if (pricesArray[i] > buyMarketPrice){
+                                                            buyMarketPrice = pricesArray[i];
+                                                            }
+                                                            totalBuyOrders = totalBuyOrders + parseInt(amountsArray[i]);
+                                                            if(addressesArray[i] == String(account)){
+                                                            if (orderTableCounter < accountOrderLength){
+                                                            var row = document.getElementById('BuyRow' + i);
+                                                            row.childNodes[0].innerHTML = "Buy";
+                                                            row.childNodes[1].innerHTML = amountsArray[i];
+                                                            row.childNodes[2].innerHTML = pricesArray[i];
+                                                            } else {
+                                                            var row = table.insertRow(-1);
+                                                            row.id = 'BuyRow' + i;
+                                                            var cell1 = row.insertCell(0);
+                                                            var cell2 = row.insertCell(1);
+                                                            var cell3 = row.insertCell(2);
+                                                            var cell4 = row.insertCell(3);
+                                                            cell1.innerHTML = "Buy";
+                                                            cell1.style.textAlign = "center";
+                                                            cell2.innerHTML = amountsArray[i];
+                                                            cell2.style.textAlign = "center";
+                                                            cell3.innerHTML = pricesArray[i];
+                                                            cell3.style.textAlign = "center";
+                                                            var btn = document.createElement('input');
+                                                            btn.type = "button";
+                                                            btn.className = "tableBtn";
+                                                            btn.value = "delete";
+                                                            btn.onclick = cancelBuyOrder(i);
+                                                            cell4.appendChild(btn);
+                                                            cell4.style.textAlign = "center";
+                                                            accountOrderLength++;
+                                                            }
+                                                            orderTableCounter++;
+                                                            }
+                                                            
+                                                            };
+                                                            chart.data.labels = chart.data.labels.concat(chartOrderLabels);
+                                                            chart.data.datasets[0].data = chart.data.datasets[0].data.concat(chartOrders);
+                                                            chart.update();
+                                                            };
                                                             App.contracts.Fishare.getSellOrders((err, Orders) => {
                                                                                                 sellMarketPrice = 0;
                                                                                                 totalSellOrders = 0;
@@ -1631,10 +1705,10 @@ getOrders: function(event, accounts){
                                                                                                 chart.data.datasets[0].data = chart.data.datasets[0].data.concat(OrdersRev.reverse());
                                                                                                 chart.update();
                                                                                                 });
-                                                                       });
+                                                            });
                          
                          });
-                   
+    
 },
 removeBuyOrder: function(arg, accounts){
     web3.eth.getAccounts(function(error, accounts) {
@@ -1714,88 +1788,88 @@ EscrowMarketBuy: function(event){
                          
                          //set market price for selling if there are posted limit buy orders
                          App.contracts.Fishare.getEscrows((err, Orders) => {
-                                                                       sellers = Orders[0].toString();
-                                                                       sellersArray = sellers.split(',');
-                                                                       buyers = Orders[1].toString();
-                                                                       buyersArray = buyers.split(',');
-                                                                       arbiters = Orders[2].toString();
-                                                                       arbitersArray = arbiters.split(',');
-                                                                       prices = Orders[3].toString();
-                                                                       pricesArray = prices.split(',');
-                                                                       amounts = Orders[4].toString();
-                                                                       amountsArray = amounts.split(',');
-                                                                       percentsUpFront = Orders[5].toString();
-                                                                       percentsUpFrontArray = percentsUpFront.split(',');
-                                                                       taxIncluded = Orders[6].toString();
-                                                                       taxIncludedArray = taxIncluded.split(',');
-                                                                       App.contracts.Fishare.getSellerEscrowSignatures((err, OrderSellerSigs) => {
-                                                                                                                     var sellerSigned = OrderSellerSigs[0];
-                                                                                                                     var sellerUnSigned = OrderSellerSigs[1];
-                                                                                                                     var  sellerReleased = OrderSellerSigs[2];
-                                                                                                                     var sellerDisputed = OrderSellerSigs[3];
-                                                                                                                     App.contracts.Fishare.getBuyerEscrowSignatures((err, OrderBuyerSigs) => {
-                                                                                                                                                                   var buyerSigned = OrderBuyerSigs[0];
-                                                                                                                                                                   var buyerUnSigned = OrderBuyerSigs[1];
-                                                                                                                                                                   var  buyerReleased = OrderBuyerSigs[2];
-                                                                                                                                                                   var buyerDisputed = OrderBuyerSigs[3];
-                                                                                                                                                                   for (var i = 0; i < amountsArray.length ; i++) {
-                                                                                                                                                                   if(sellersArray[i] != String(account) && buyersArray[i] != String(account) && buyersArray[i] == blankAddress){
-                                                                                                                                                                   totalEscrowOpenSellOrders++;
-                                                                                                                                                                   if (escrowOpenOrderTableCounter < escrowOpenOrderLength){
-                                                                                                                                                                   var row = document.getElementById('EscrowOpenOrderRow' + i);
-                                                                                                                                                                   row.childNodes[0].innerHTML = i;
-                                                                                                                                                                   row.childNodes[1].innerHTML = amountsArray[i];
-                                                                                                                                                                   row.childNodes[2].innerHTML = pricesArray[i];
-                                                                                                                                                                   row.childNodes[3].innerHTML = percentsUpFrontArray[i];
-                                                                                                                                                                   } else {
-                                                                                                                                                                   var row = table.insertRow(-1);
-                                                                                                                                                                   row.id = 'EscrowOpenOrderRow' + i;
-                                                                                                                                                                   var cell1 = row.insertCell(0);
-                                                                                                                                                                   var cell2 = row.insertCell(1);
-                                                                                                                                                                   var cell3 = row.insertCell(2);
-                                                                                                                                                                   var cell4 = row.insertCell(3);
-                                                                                                                                                                   var cell5 = row.insertCell(4);
-                                                                                                                                                                   
-                                                                                                                                                                   cell1.innerHTML = i;
-                                                                                                                                                                   cell1.style.textAlign = "center";
-                                                                                                                                                                   cell2.innerHTML = amountsArray[i];
-                                                                                                                                                                   cell2.style.textAlign = "center";
-                                                                                                                                                                   cell3.innerHTML = pricesArray[i];
-                                                                                                                                                                   cell3.style.textAlign = "center";
-                                                                                                                                                                   cell4.innerHTML = percentsUpFrontArray[i];
-                                                                                                                                                                   cell4.style.textAlign = "center";
-                                                                                                                                                                   var btn = document.createElement('input');
-                                                                                                                                                                   btn.type = "button";
-                                                                                                                                                                   btn.className = "tableBtn";
-                                                                                                                                                                   btn.value = "Actions";
-                                                                                                                                                                   btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
-                                                                                                                                                                   cell5.appendChild(btn);
-                                                                                                                                                                   cell5.style.textAlign = "center";
-                                                                                                                                                                   escrowOpenOrderLength++;
-                                                                                                                                                                   };
-                                                                                                                                                                   escrowOpenOrderTableCounter++;
-                                                                                                                                                                   }
-                                                                                                                                                                   };
-                                                                                                                                                                   if(escrowOpenOrderTableCounter == 0){
-                                                                                                                                                                   document.getElementById("openEscrowOrders").style.display = 'none';
-                                                                                                                                                                   } else {
-                                                                                                                                                                   document.getElementById("openEscrowOrders").style.display = 'block';
-                                                                                                                                                                   document.getElementById("openEscrowOrdersHeader").value = "Open Orders";
-                                                                                                                                                                   };
-                                                                                                                                                                   if (totalEscrowOpenSellOrders == 0){
-                                                                                                                                                                   var property = document.getElementById("idEscrowMarketBuyNO");
-                                                                                                                                                                   property.style.display = "block";
-                                            
-                                                                                                                                                                   } else {
-                                                                                                                                                                   var property = document.getElementById("idEscrowMarketbuyNO");
-                                                                                                                                                                   property.style.display = "none";
-                                                                                                                                                                   };
-                                                                                                                                                                   });
-                                                                                                                     });
-                                                                       
-                                                                       
-                                                                       
-                                                                       });
+                                                          sellers = Orders[0].toString();
+                                                          sellersArray = sellers.split(',');
+                                                          buyers = Orders[1].toString();
+                                                          buyersArray = buyers.split(',');
+                                                          arbiters = Orders[2].toString();
+                                                          arbitersArray = arbiters.split(',');
+                                                          prices = Orders[3].toString();
+                                                          pricesArray = prices.split(',');
+                                                          amounts = Orders[4].toString();
+                                                          amountsArray = amounts.split(',');
+                                                          percentsUpFront = Orders[5].toString();
+                                                          percentsUpFrontArray = percentsUpFront.split(',');
+                                                          taxIncluded = Orders[6].toString();
+                                                          taxIncludedArray = taxIncluded.split(',');
+                                                          App.contracts.Fishare.getSellerEscrowSignatures((err, OrderSellerSigs) => {
+                                                                                                          var sellerSigned = OrderSellerSigs[0];
+                                                                                                          var sellerUnSigned = OrderSellerSigs[1];
+                                                                                                          var  sellerReleased = OrderSellerSigs[2];
+                                                                                                          var sellerDisputed = OrderSellerSigs[3];
+                                                                                                          App.contracts.Fishare.getBuyerEscrowSignatures((err, OrderBuyerSigs) => {
+                                                                                                                                                         var buyerSigned = OrderBuyerSigs[0];
+                                                                                                                                                         var buyerUnSigned = OrderBuyerSigs[1];
+                                                                                                                                                         var  buyerReleased = OrderBuyerSigs[2];
+                                                                                                                                                         var buyerDisputed = OrderBuyerSigs[3];
+                                                                                                                                                         for (var i = 0; i < amountsArray.length ; i++) {
+                                                                                                                                                         if(sellersArray[i] != String(account) && buyersArray[i] != String(account) && buyersArray[i] == blankAddress){
+                                                                                                                                                         totalEscrowOpenSellOrders++;
+                                                                                                                                                         if (escrowOpenOrderTableCounter < escrowOpenOrderLength){
+                                                                                                                                                         var row = document.getElementById('EscrowOpenOrderRow' + i);
+                                                                                                                                                         row.childNodes[0].innerHTML = i;
+                                                                                                                                                         row.childNodes[1].innerHTML = amountsArray[i];
+                                                                                                                                                         row.childNodes[2].innerHTML = pricesArray[i];
+                                                                                                                                                         row.childNodes[3].innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         } else {
+                                                                                                                                                         var row = table.insertRow(-1);
+                                                                                                                                                         row.id = 'EscrowOpenOrderRow' + i;
+                                                                                                                                                         var cell1 = row.insertCell(0);
+                                                                                                                                                         var cell2 = row.insertCell(1);
+                                                                                                                                                         var cell3 = row.insertCell(2);
+                                                                                                                                                         var cell4 = row.insertCell(3);
+                                                                                                                                                         var cell5 = row.insertCell(4);
+                                                                                                                                                         
+                                                                                                                                                         cell1.innerHTML = i;
+                                                                                                                                                         cell1.style.textAlign = "center";
+                                                                                                                                                         cell2.innerHTML = amountsArray[i];
+                                                                                                                                                         cell2.style.textAlign = "center";
+                                                                                                                                                         cell3.innerHTML = pricesArray[i];
+                                                                                                                                                         cell3.style.textAlign = "center";
+                                                                                                                                                         cell4.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell4.style.textAlign = "center";
+                                                                                                                                                         var btn = document.createElement('input');
+                                                                                                                                                         btn.type = "button";
+                                                                                                                                                         btn.className = "tableBtn";
+                                                                                                                                                         btn.value = "Actions";
+                                                                                                                                                         btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
+                                                                                                                                                         cell5.appendChild(btn);
+                                                                                                                                                         cell5.style.textAlign = "center";
+                                                                                                                                                         escrowOpenOrderLength++;
+                                                                                                                                                         };
+                                                                                                                                                         escrowOpenOrderTableCounter++;
+                                                                                                                                                         }
+                                                                                                                                                         };
+                                                                                                                                                         if(escrowOpenOrderTableCounter == 0){
+                                                                                                                                                         document.getElementById("openEscrowOrders").style.display = 'none';
+                                                                                                                                                         } else {
+                                                                                                                                                         document.getElementById("openEscrowOrders").style.display = 'block';
+                                                                                                                                                         document.getElementById("openEscrowOrdersHeader").value = "Open Orders";
+                                                                                                                                                         };
+                                                                                                                                                         if (totalEscrowOpenSellOrders == 0){
+                                                                                                                                                         var property = document.getElementById("idEscrowMarketBuyNO");
+                                                                                                                                                         property.style.display = "block";
+                                                                                                                                                         
+                                                                                                                                                         } else {
+                                                                                                                                                         var property = document.getElementById("idEscrowMarketbuyNO");
+                                                                                                                                                         property.style.display = "none";
+                                                                                                                                                         };
+                                                                                                                                                         });
+                                                                                                          });
+                                                          
+                                                          
+                                                          
+                                                          });
                          
                          });
 },
@@ -1855,97 +1929,97 @@ EscrowMarketSell: function(event){
                          
                          //set market price for selling if there are posted limit buy orders
                          App.contracts.Fishare.getEscrows((err, Orders) => {
-                                                                       sellers = Orders[0].toString();
-                                                                       sellersArray = sellers.split(',');
-                                                                       buyers = Orders[1].toString();
-                                                                       buyersArray = buyers.split(',');
-                                                                       arbiters = Orders[2].toString();
-                                                                       arbitersArray = arbiters.split(',');
-                                                                       prices = Orders[3].toString();
-                                                                       pricesArray = prices.split(',');
-                                                                       amounts = Orders[4].toString();
-                                                                       amountsArray = amounts.split(',');
-                                                                       percentsUpFront = Orders[5].toString();
-                                                                       percentsUpFrontArray = percentsUpFront.split(',');
-                                                                       taxIncluded = Orders[6].toString();
-                                                                       taxIncludedArray = taxIncluded.split(',');
-                                                                       App.contracts.Fishare.getSellerEscrowSignatures((err, OrderSellerSigs) => {
-                                                                                                                     var sellerSigned = OrderSellerSigs[0];
-                                                                                                                     var sellerUnSigned = OrderSellerSigs[1];
-                                                                                                                     var  sellerReleased = OrderSellerSigs[2];
-                                                                                                                     var sellerDisputed = OrderSellerSigs[3];
-                                                                                                                     App.contracts.Fishare.getBuyerEscrowSignatures((err, OrderBuyerSigs) => {
-                                                                                    
-                                                                                                                                                                   var buyerSigned = OrderBuyerSigs[0];
-                                                                                                                                                                   var buyerUnSigned = OrderBuyerSigs[1];
-                                                                                                                                                                   var  buyerReleased = OrderBuyerSigs[2];
-                                                                                                                                                                   var buyerDisputed = OrderBuyerSigs[3];
-                                                                                                                                                                   for (var i = 0; i < amountsArray.length ; i++) {
-                                                                                                                                                                   if(sellersArray[i] != String(account) && buyersArray[i] != String(account) && sellersArray[i] == blankAddress){
-                                                                                                                                                                   
-                                                                                                                                                                   if (escrowOpenOrderTableCounter < totalEscrowOpenBuyOrders){
-                                                                                                                                                                   var row = document.getElementById('EscrowOpenOrderRow' + i);
-                                                                                                                                                                   row.childNodes[0].innerHTML = i;
-                                                                                                                                                                   row.childNodes[1].innerHTML = amountsArray[i];
-                                                                                                                                                                   row.childNodes[2].innerHTML = pricesArray[i];
-                                                                                                                                                                   row.childNodes[3].innerHTML = percentsUpFrontArray[i];
-                                                                                                                                                                   } else {
-                                                                                                                                                                   var row = table.insertRow(-1);
-                                                                                                                                                                   row.id = 'EscrowOpenOrderRow' + i;
-                                                                                                                                                                   var cell1 = row.insertCell(0);
-                                                                                                                                                                   var cell2 = row.insertCell(1);
-                                                                                                                                                                   var cell3 = row.insertCell(2);
-                                                                                                                                                                   var cell4 = row.insertCell(3);
-                                                                                                                                                                   var cell5 = row.insertCell(4);
-                                                                                                                                                                   
-                                                                                                                                                                   cell1.innerHTML = i;
-                                                                                                                                                                   cell1.style.textAlign = "center";
-                                                                                                                                                                   cell2.innerHTML = amountsArray[i];
-                                                                                                                                                                   cell2.style.textAlign = "center";
-                                                                                                                                                                   cell3.innerHTML = pricesArray[i];
-                                                                                                                                                                   cell3.style.textAlign = "center";
-                                                                                                                                                                   cell4.innerHTML = percentsUpFrontArray[i];
-                                                                                                                                                                   cell4.style.textAlign = "center";
-                                                                                                                                                                   var btn = document.createElement('input');
-                                                                                                                                                                   btn.type = "button";
-                                                                                                                                                                   btn.className = "tableBtn";
-                                                                                                                                                                   btn.value = "Actions";
-                                                                                                                                                                   btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
-                                                                                                                                                                   cell5.appendChild(btn);
-                                                                                                                                                                   cell5.style.textAlign = "center";
-                                                                                                                                                                   totalEscrowOpenBuyOrders++;
-                                                                                                                                                                   };
-                                                                                                                                                                   escrowOpenOrderTableCounter++;
-                                                                                                                                                                   };
-                                                                                                                                                                   };
-                                                                                                                                                                   if(escrowOpenOrderTableCounter == 0){
-                                                                                                                                                                   document.getElementById("openEscrowOrders").style.display = 'none';
-                                                                                                                                                                   } else {
-                                                                                                                                                                   document.getElementById("openEscrowOrders").style.display = 'block';
-                                                                                                                                                                   document.getElementById("openEscrowOrdersHeader").value = "Open Orders";
-                                                                                                                                                                   };
-                                                                                                                                                                   if (totalEscrowOpenBuyOrders == 0){
-                                                                                                                                                                   var property = document.getElementById("idEscrowMarketsellNO");
-                                                                                                                                                                   property.style.display = "block";
-                                    
-                                                                                                                                                                   } else {
-                                                                                                                                                                   var property = document.getElementById("idEscrowMarketsellNO");
-                                                                                                                                                                   property.style.display = "none";
-    
-                                                                                                                                                                   };
-                                                                                                                                                        
-                                                                                                                                                                   
-    
-                                                                                                                                                                 
-                                                                                                                                                                   });
-                                                                                                                     });
-                                                                       
-                                                                       
-                                                                       
-                                                                       });
+                                                          sellers = Orders[0].toString();
+                                                          sellersArray = sellers.split(',');
+                                                          buyers = Orders[1].toString();
+                                                          buyersArray = buyers.split(',');
+                                                          arbiters = Orders[2].toString();
+                                                          arbitersArray = arbiters.split(',');
+                                                          prices = Orders[3].toString();
+                                                          pricesArray = prices.split(',');
+                                                          amounts = Orders[4].toString();
+                                                          amountsArray = amounts.split(',');
+                                                          percentsUpFront = Orders[5].toString();
+                                                          percentsUpFrontArray = percentsUpFront.split(',');
+                                                          taxIncluded = Orders[6].toString();
+                                                          taxIncludedArray = taxIncluded.split(',');
+                                                          App.contracts.Fishare.getSellerEscrowSignatures((err, OrderSellerSigs) => {
+                                                                                                          var sellerSigned = OrderSellerSigs[0];
+                                                                                                          var sellerUnSigned = OrderSellerSigs[1];
+                                                                                                          var  sellerReleased = OrderSellerSigs[2];
+                                                                                                          var sellerDisputed = OrderSellerSigs[3];
+                                                                                                          App.contracts.Fishare.getBuyerEscrowSignatures((err, OrderBuyerSigs) => {
+                                                                                                                                                         
+                                                                                                                                                         var buyerSigned = OrderBuyerSigs[0];
+                                                                                                                                                         var buyerUnSigned = OrderBuyerSigs[1];
+                                                                                                                                                         var  buyerReleased = OrderBuyerSigs[2];
+                                                                                                                                                         var buyerDisputed = OrderBuyerSigs[3];
+                                                                                                                                                         for (var i = 0; i < amountsArray.length ; i++) {
+                                                                                                                                                         if(sellersArray[i] != String(account) && buyersArray[i] != String(account) && sellersArray[i] == blankAddress){
+                                                                                                                                                         
+                                                                                                                                                         if (escrowOpenOrderTableCounter < totalEscrowOpenBuyOrders){
+                                                                                                                                                         var row = document.getElementById('EscrowOpenOrderRow' + i);
+                                                                                                                                                         row.childNodes[0].innerHTML = i;
+                                                                                                                                                         row.childNodes[1].innerHTML = amountsArray[i];
+                                                                                                                                                         row.childNodes[2].innerHTML = pricesArray[i];
+                                                                                                                                                         row.childNodes[3].innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         } else {
+                                                                                                                                                         var row = table.insertRow(-1);
+                                                                                                                                                         row.id = 'EscrowOpenOrderRow' + i;
+                                                                                                                                                         var cell1 = row.insertCell(0);
+                                                                                                                                                         var cell2 = row.insertCell(1);
+                                                                                                                                                         var cell3 = row.insertCell(2);
+                                                                                                                                                         var cell4 = row.insertCell(3);
+                                                                                                                                                         var cell5 = row.insertCell(4);
+                                                                                                                                                         
+                                                                                                                                                         cell1.innerHTML = i;
+                                                                                                                                                         cell1.style.textAlign = "center";
+                                                                                                                                                         cell2.innerHTML = amountsArray[i];
+                                                                                                                                                         cell2.style.textAlign = "center";
+                                                                                                                                                         cell3.innerHTML = pricesArray[i];
+                                                                                                                                                         cell3.style.textAlign = "center";
+                                                                                                                                                         cell4.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell4.style.textAlign = "center";
+                                                                                                                                                         var btn = document.createElement('input');
+                                                                                                                                                         btn.type = "button";
+                                                                                                                                                         btn.className = "tableBtn";
+                                                                                                                                                         btn.value = "Actions";
+                                                                                                                                                         btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
+                                                                                                                                                         cell5.appendChild(btn);
+                                                                                                                                                         cell5.style.textAlign = "center";
+                                                                                                                                                         totalEscrowOpenBuyOrders++;
+                                                                                                                                                         };
+                                                                                                                                                         escrowOpenOrderTableCounter++;
+                                                                                                                                                         };
+                                                                                                                                                         };
+                                                                                                                                                         if(escrowOpenOrderTableCounter == 0){
+                                                                                                                                                         document.getElementById("openEscrowOrders").style.display = 'none';
+                                                                                                                                                         } else {
+                                                                                                                                                         document.getElementById("openEscrowOrders").style.display = 'block';
+                                                                                                                                                         document.getElementById("openEscrowOrdersHeader").value = "Open Orders";
+                                                                                                                                                         };
+                                                                                                                                                         if (totalEscrowOpenBuyOrders == 0){
+                                                                                                                                                         var property = document.getElementById("idEscrowMarketsellNO");
+                                                                                                                                                         property.style.display = "block";
+                                                                                                                                                         
+                                                                                                                                                         } else {
+                                                                                                                                                         var property = document.getElementById("idEscrowMarketsellNO");
+                                                                                                                                                         property.style.display = "none";
+                                                                                                                                                         
+                                                                                                                                                         };
+                                                                                                                                                         
+                                                                                                                                                         
+                                                                                                                                                         
+                                                                                                                                                         
+                                                                                                                                                         });
+                                                                                                          });
+                                                          
+                                                          
+                                                          
+                                                          });
                          
                          });
-
+    
 },
 getTaxRate: function(){
     web3.eth.getAccounts(function(error, accounts) {
@@ -1972,8 +2046,8 @@ calcEscrowBuyPrice: function(){
                              }
                              var account = accounts[0];
                              App.contracts.Fishare.getTaxRate((err, taxRate) => {
-                                                                           document.getElementById("escrowBuyCost").value = Math.floor((100+parseInt(taxRate))*totalCost/100);
-                                                                           });
+                                                              document.getElementById("escrowBuyCost").value = Math.floor((100+parseInt(taxRate))*totalCost/100);
+                                                              });
                              });
     } else {
         document.getElementById("escrowBuyCost").value = totalCost;
@@ -2024,19 +2098,19 @@ calcEscrowSellPrice: function(){
     var includeTax = document.getElementById("escrowSellIncludeTax").checked;
     totalCost = units*pricePerUnit;
     if(includeTax){
-    web3.eth.getAccounts(function(error, accounts) {
-                         if (error) {
-                         alert(error);
-                         }
-                         var account = accounts[0];
-                         App.contracts.Fishare.getTaxRate((err, taxRate) => {
-                                                                       document.getElementById("escrowSellCost").value = Math.floor((100+parseInt(taxRate))*totalCost/100);
-                                                               });
-                         });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             App.contracts.Fishare.getTaxRate((err, taxRate) => {
+                                                              document.getElementById("escrowSellCost").value = Math.floor((100+parseInt(taxRate))*totalCost/100);
+                                                              });
+                             });
     } else {
         document.getElementById("escrowSellCost").value = totalCost;
     }
-
+    
 },
 EscrowLimitSellExecute: function(event){
     var pricePerPound = document.getElementById("escrowSellFishPrice").value;
@@ -2060,22 +2134,22 @@ EscrowLimitSellExecute: function(event){
     } else if (upFrontPercent > 100 || upFrontPercent < 0 || upFrontPercent == null || upFrontPercent == "") {
         alert("Up front percent must be between 0 and 100");
     } else
-    web3.eth.getAccounts(function(error, accounts) {
-                         if (error) {
-                         alert(error);
-                         }
-                         var account = accounts[0];
-                         if (arbiter == "") {
-                         arbiter = account;
-                         }
-                         App.contracts.Fishare.balanceOfOwnership(account, (err, balance) => {
-                                                         if(parseInt(pounds) > parseInt(balance)){
-                                                            alert("Your balance is: " + balance);
-                                                            return;
-                                                         } else
-                                                             App.contracts.Fishare.createEscrow(account, buyerAddress, arbiter, cost, pounds, upFrontPercent, includeTax, {from: account, gas: 250000}, (err, taxRate) => {});
-                                                            });
-                         });
+        web3.eth.getAccounts(function(error, accounts) {
+                             if (error) {
+                             alert(error);
+                             }
+                             var account = accounts[0];
+                             if (arbiter == "") {
+                             arbiter = account;
+                             }
+                             App.contracts.Fishare.balanceOfOwnership(account, (err, balance) => {
+                                                                      if(parseInt(pounds) > parseInt(balance)){
+                                                                      alert("Your balance is: " + balance);
+                                                                      return;
+                                                                      } else
+                                                                      App.contracts.Fishare.createEscrow(account, buyerAddress, arbiter, cost, pounds, upFrontPercent, includeTax, {from: account, gas: 250000}, (err, taxRate) => {});
+                                                                      });
+                             });
     
 },
 getEscrowOrders: function(event, accounts){
@@ -2101,106 +2175,106 @@ getEscrowOrders: function(event, accounts){
     
     var table = document.getElementById("escrowSignedOrderTable");
     var escrowOrderTableCounter = 0;
-
+    
     //set market price for buying if there are posted limit sell orders
     web3.eth.getAccounts(function(error, accounts) {
                          if (error) {
                          alert(error);
                          }
                          var account = accounts[0];
-
+                         
                          //set market price for selling if there are posted limit buy orders
                          App.contracts.Fishare.getEscrows((err, Orders) => {
-                                                                       var chartOrders = [];
-                                                                       var chartOrderLabels = [];
-                                                                       sellers = Orders[0].toString();
-                                                                       sellersArray = sellers.split(',');
-                                                                       buyers = Orders[1].toString();
-                                                                       buyersArray = buyers.split(',');
-                                                                       arbiters = Orders[2].toString();
-                                                                       arbitersArray = arbiters.split(',');
-                                                                       prices = Orders[3].toString();
-                                                                       pricesArray = prices.split(',');
-                                                                       amounts = Orders[4].toString();
-                                                                       amountsArray = amounts.split(',');
-                                                                       percentsUpFront = Orders[5].toString();
-                                                                       percentsUpFrontArray = percentsUpFront.split(',');
-                                                                       taxIncluded = Orders[6].toString();
-                                                                       taxIncludedArray = taxIncluded.split(',');
-                                                                       App.contracts.Fishare.getSellerEscrowSignatures((err, OrderSellerSigs) => {
-                                                                                                                     var sellerSigned = OrderSellerSigs[0];
-                                                                                                                     var sellerUnSigned = OrderSellerSigs[1];
-                                                                                                                     var  sellerReleased = OrderSellerSigs[2];
-                                                                                                                     var sellerDisputed = OrderSellerSigs[3];
-                                                                                                                     App.contracts.Fishare.getBuyerEscrowSignatures((err, OrderBuyerSigs) => {
-                                                                 
-                                                                         var buyerSigned = OrderBuyerSigs[0];
-                                                                         var buyerUnSigned = OrderBuyerSigs[1];
-                                                                         var  buyerReleased = OrderBuyerSigs[2];
-                                                                         var buyerDisputed = OrderBuyerSigs[3];
-                                                                       for (var i = 0; i < amountsArray.length ; i++) {
-                                                                           if(sellersArray[i] == String(account) || buyersArray[i] == String(account)){
-                                                                           totalEscrowBuyOrders = totalEscrowBuyOrders + parseInt(amountsArray[i]);
-                                                                           if (escrowOrderTableCounter < escrowOrderLength){
-                                                                               var row = document.getElementById('EscrowRow' + i);
-                                                                               row.childNodes[0].innerHTML = i;
-                                                                               if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
-                                                                               row.childNodes[1].innerHTML = "Sell";
-                                                                               } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
-                                                                               row.childNodes[1].innerHTML = "Buy";
-                                                                               }
-                                                                               row.childNodes[2].innerHTML = amountsArray[i];
-                                                                               row.childNodes[3].innerHTML = pricesArray[i];
-                                                                               row.childNodes[4].innerHTML = percentsUpFrontArray[i];
-                                                                           } else {
-                                                                             var row = table.insertRow(-1);
-                                                                             row.id = 'EscrowRow' + i;
-                                                                             var cell1 = row.insertCell(0);
-                                                                             var cell2 = row.insertCell(1);
-                                                                             var cell3 = row.insertCell(2);
-                                                                             var cell4 = row.insertCell(3);
-                                                                             var cell5 = row.insertCell(4);
-                                                                             var cell6 = row.insertCell(5);
-                                                                  
-                                                                       cell1.innerHTML = i;
-                                                                       cell1.style.textAlign = "center";
-                                                                           if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
-                                                                             cell2.innerHTML = "Sell";
-                                                                           } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
-                                                                             cell2.innerHTML = "Buy";
-                                                                           };
-                                                                             cell2.style.textAlign = "center";
-                                                                             cell3.innerHTML = amountsArray[i];
-                                                                             cell3.style.textAlign = "center";
-                                                                             cell4.innerHTML = pricesArray[i];
-                                                                             cell4.style.textAlign = "center";
-                                                                             cell5.innerHTML = percentsUpFrontArray[i];
-                                                                             cell5.style.textAlign = "center";
-                                                                               var btn = document.createElement('input');
-                                                                               btn.type = "button";
-                                                                               btn.className = "tableBtn";
-                                                                               btn.value = "Actions";
-                                                                               btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
-                                                                               cell6.appendChild(btn);
-                                                                               cell6.style.textAlign = "center";
-                                                                               escrowOrderLength++;
-                                                                            };
-                                                                           escrowOrderTableCounter++;
-                                                                        };
-                                                                                                                                                                   
-                                                                       };
-                                                                       if(escrowOrderTableCounter == 0){
-                                                                           document.getElementById("yourEscrowOrders").style.display = 'none';
-                                                                       } else {
-                                                                           document.getElementById("yourEscrowOrders").style.display = 'block';
-                                                                           document.getElementById("noSignedEscrowOrders").value = "Your Orders";
-                                                                       };
-                                                                                                                     });
-                                                                                                                     });
-                                                                      
-                                                                                                                     
-                                                                       
-                                                                       });
+                                                          var chartOrders = [];
+                                                          var chartOrderLabels = [];
+                                                          sellers = Orders[0].toString();
+                                                          sellersArray = sellers.split(',');
+                                                          buyers = Orders[1].toString();
+                                                          buyersArray = buyers.split(',');
+                                                          arbiters = Orders[2].toString();
+                                                          arbitersArray = arbiters.split(',');
+                                                          prices = Orders[3].toString();
+                                                          pricesArray = prices.split(',');
+                                                          amounts = Orders[4].toString();
+                                                          amountsArray = amounts.split(',');
+                                                          percentsUpFront = Orders[5].toString();
+                                                          percentsUpFrontArray = percentsUpFront.split(',');
+                                                          taxIncluded = Orders[6].toString();
+                                                          taxIncludedArray = taxIncluded.split(',');
+                                                          App.contracts.Fishare.getSellerEscrowSignatures((err, OrderSellerSigs) => {
+                                                                                                          var sellerSigned = OrderSellerSigs[0];
+                                                                                                          var sellerUnSigned = OrderSellerSigs[1];
+                                                                                                          var  sellerReleased = OrderSellerSigs[2];
+                                                                                                          var sellerDisputed = OrderSellerSigs[3];
+                                                                                                          App.contracts.Fishare.getBuyerEscrowSignatures((err, OrderBuyerSigs) => {
+                                                                                                                                                         
+                                                                                                                                                         var buyerSigned = OrderBuyerSigs[0];
+                                                                                                                                                         var buyerUnSigned = OrderBuyerSigs[1];
+                                                                                                                                                         var  buyerReleased = OrderBuyerSigs[2];
+                                                                                                                                                         var buyerDisputed = OrderBuyerSigs[3];
+                                                                                                                                                         for (var i = 0; i < amountsArray.length ; i++) {
+                                                                                                                                                         if(sellersArray[i] == String(account) || buyersArray[i] == String(account)){
+                                                                                                                                                         totalEscrowBuyOrders = totalEscrowBuyOrders + parseInt(amountsArray[i]);
+                                                                                                                                                         if (escrowOrderTableCounter < escrowOrderLength){
+                                                                                                                                                         var row = document.getElementById('EscrowRow' + i);
+                                                                                                                                                         row.childNodes[0].innerHTML = i;
+                                                                                                                                                         if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
+                                                                                                                                                         row.childNodes[1].innerHTML = "Sell";
+                                                                                                                                                         } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
+                                                                                                                                                         row.childNodes[1].innerHTML = "Buy";
+                                                                                                                                                         }
+                                                                                                                                                         row.childNodes[2].innerHTML = amountsArray[i];
+                                                                                                                                                         row.childNodes[3].innerHTML = pricesArray[i];
+                                                                                                                                                         row.childNodes[4].innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         } else {
+                                                                                                                                                         var row = table.insertRow(-1);
+                                                                                                                                                         row.id = 'EscrowRow' + i;
+                                                                                                                                                         var cell1 = row.insertCell(0);
+                                                                                                                                                         var cell2 = row.insertCell(1);
+                                                                                                                                                         var cell3 = row.insertCell(2);
+                                                                                                                                                         var cell4 = row.insertCell(3);
+                                                                                                                                                         var cell5 = row.insertCell(4);
+                                                                                                                                                         var cell6 = row.insertCell(5);
+                                                                                                                                                         
+                                                                                                                                                         cell1.innerHTML = i;
+                                                                                                                                                         cell1.style.textAlign = "center";
+                                                                                                                                                         if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
+                                                                                                                                                         cell2.innerHTML = "Sell";
+                                                                                                                                                         } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
+                                                                                                                                                         cell2.innerHTML = "Buy";
+                                                                                                                                                         };
+                                                                                                                                                         cell2.style.textAlign = "center";
+                                                                                                                                                         cell3.innerHTML = amountsArray[i];
+                                                                                                                                                         cell3.style.textAlign = "center";
+                                                                                                                                                         cell4.innerHTML = pricesArray[i];
+                                                                                                                                                         cell4.style.textAlign = "center";
+                                                                                                                                                         cell5.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell5.style.textAlign = "center";
+                                                                                                                                                         var btn = document.createElement('input');
+                                                                                                                                                         btn.type = "button";
+                                                                                                                                                         btn.className = "tableBtn";
+                                                                                                                                                         btn.value = "Actions";
+                                                                                                                                                         btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
+                                                                                                                                                         cell6.appendChild(btn);
+                                                                                                                                                         cell6.style.textAlign = "center";
+                                                                                                                                                         escrowOrderLength++;
+                                                                                                                                                         };
+                                                                                                                                                         escrowOrderTableCounter++;
+                                                                                                                                                         };
+                                                                                                                                                         
+                                                                                                                                                         };
+                                                                                                                                                         if(escrowOrderTableCounter == 0){
+                                                                                                                                                         document.getElementById("yourEscrowOrders").style.display = 'none';
+                                                                                                                                                         } else {
+                                                                                                                                                         document.getElementById("yourEscrowOrders").style.display = 'block';
+                                                                                                                                                         document.getElementById("noSignedEscrowOrders").value = "Your Orders";
+                                                                                                                                                         };
+                                                                                                                                                         });
+                                                                                                          });
+                                                          
+                                                          
+                                                          
+                                                          });
                          
                          });
     
@@ -2308,7 +2382,7 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          
                          
                          
-                    if(isSeller == true){
+                         if(isSeller == true){
                          if(sellerSigned == false && seller == "0x0000000000000000000000000000000000000000"){
                          btn0.onclick = signEscrow(id, 0);
                          } else {
@@ -2326,10 +2400,10 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          btn3.style.background='#ffffff';
                          btn3.onclick = alertText("You have not disputed this contract.");
                          } else if(sellerDisputed == false && seller == "0x0000000000000000000000000000000000000000"){
-                            btn2.style.background='#ffffff';
-                            btn2.onclick = alertText("You have not signed this contract.");
-                            btn3.style.background='#ffffff';
-                            btn3.onclick = alertText("You have not signed this contract.");
+                         btn2.style.background='#ffffff';
+                         btn2.onclick = alertText("You have not signed this contract.");
+                         btn3.style.background='#ffffff';
+                         btn3.onclick = alertText("You have not signed this contract.");
                          } else {
                          btn2.style.background='#ffffff';
                          btn2.onclick = alertText("You have already disputed this escrow contract.");
@@ -2352,11 +2426,11 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          btn5.onclick = unreleaseEscrow(id);
                          }
                          
-                    } else if (isBuyer == true){
+                         } else if (isBuyer == true){
                          if(buyerSigned == false && buyer == "0x0000000000000000000000000000000000000000"){
-                            App.contracts.Fishare.getTaxRate((err, taxRate) => {
-                                                                               btn0.onclick = signEscrow(id, Math.floor((100+parseInt(taxRate))*price/100));
-                                                                               });
+                         App.contracts.Fishare.getTaxRate((err, taxRate) => {
+                                                          btn0.onclick = signEscrow(id, Math.floor((100+parseInt(taxRate))*price/100));
+                                                          });
                          
                          } else {
                          btn0.style.background='#ffffff';
@@ -2397,22 +2471,22 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          btn4.onclick = alertText("You have already released this escrow contract.");
                          btn5.onclick = unreleaseEscrow(id);
                          }
-                    };
+                         };
                          if(isArbiter == true){
-                            if(buyerDisputed == true || sellerDisputed == true){
-                                if(buyerSigned == true && sellerSigned == true){
-                                    btn6.onclick = arbitrateEscrow(id);
-                                } else {
-                                    btn6.style.background='#ffffff';
-                                    btn6.onclick = alertText("Both buyer and seller have not signed.");
-                                }
-                            } else {
-                                btn6.style.background='#ffffff';
-                                btn6.onclick = alertText("Neither buyer nor seller has disputed.");
-                            }
+                         if(buyerDisputed == true || sellerDisputed == true){
+                         if(buyerSigned == true && sellerSigned == true){
+                         btn6.onclick = arbitrateEscrow(id);
                          } else {
-                            btn6.style.background='#ffffff';
-                            btn6.onclick = alertText("You are not the arbiter for this contract.");
+                         btn6.style.background='#ffffff';
+                         btn6.onclick = alertText("Both buyer and seller have not signed.");
+                         }
+                         } else {
+                         btn6.style.background='#ffffff';
+                         btn6.onclick = alertText("Neither buyer nor seller has disputed.");
+                         }
+                         } else {
+                         btn6.style.background='#ffffff';
+                         btn6.onclick = alertText("You are not the arbiter for this contract.");
                          };
                          
                          
@@ -2436,7 +2510,7 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          
                          
                          });
-     
+    
 },
 signEscrow: function(arg, payment, accounts){
     document.getElementById("arbitrateFields").style.display = 'none';
@@ -2528,10 +2602,10 @@ alertText: function(arg){
 
 $(function() {
   $(window).load(function() {
-                
-    App.init();
+                 
+                 App.init();
+                 });
   });
-});
 
 // close the modal window used for escrow actions
 var modal = document.getElementById('myModal');
@@ -2540,7 +2614,7 @@ span.onclick = function() {
     modal.style.display = "none";
 };
 window.onclick = function(event) {
-
+    
     var modal = document.getElementById('myModal');
     if (event.target == modal) {
         modal.style.display = "none";
