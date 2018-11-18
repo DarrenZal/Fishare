@@ -1,7 +1,7 @@
 # Fishare
 Managment system for fisheries.  A total allowable catch is divided into shares and traded between fishermen.
 
-The Ethereum contracts include a catch share ledger, a catch share market, and a fish market.
+The Ethereum contracts include a catch share market and a fish market.
 
 Only registered participants can trade in the catch share market.
 
