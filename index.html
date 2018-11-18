@@ -8,7 +8,7 @@
                 <link href="css/app.css" rel="stylesheet">
                     
                     </head>
-    <body background = "css/FishBackground.png">
+    <body background = "FishBackground.png">
         <header id="headerContainer">
             <br/>&nbsp;&nbsp;<h1 class="text-center">Fishare</h1>&nbsp;&nbsp;<h2 class="text-center"> A Fair way to share fish</h1>&nbsp;&nbsp;
                 <a href="#registrationTag">Register</a>&nbsp;&nbsp;
@@ -231,9 +231,9 @@
                     <output class="output modalHeader" type="text" id="modalSellerDisputed"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
                     <output class="output modalHeader" type="text" id="modalSellerReleased"/></output><br/>
                     <output class="output modalHeader" type="text" id="modalBuyer"/></output><br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<output class="output modalHeader" type="text" id="modalBuyerSigned"/></output>&nbsp;&nbsp;
-                    <output class="output modalHeader" type="text" id="modalBuyerUnSigned"/></output>&nbsp;&nbsp;
-                    <output class="output modalHeader" type="text" id="modalBuyerDisputed"/></output>&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<output class="output modalHeader" type="text" id="modalBuyerSigned"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalBuyerUnSigned"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <output class="output modalHeader" type="text" id="modalBuyerDisputed"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
                     <output class="output modalHeader" type="text" id="modalBuyerReleased"/></output><br/>
                     <output class="output modalHeader" type="text" id="modalArbiter"/></output><br/><br/>
                     
@@ -246,25 +246,25 @@
                         
                         <tr>
                             <th align="center"><div class="tooltip">&nbsp;&nbsp;&nbsp;?
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltiptext">Sign this contract.  For buyers payment will be put in escrow (minus up front %).  For sellers the title to the fish will be put in escrow.</span>
                             </div></th>
                             <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltiptext">If both parties unSign, your assets will be refunded and contract cancelled.</span>
                             </div></th>
                             <th><div class="tooltip">&nbsp;&nbsp;&nbsp;?
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and title between the two parties.</span>
                             </div></th>
                             <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltiptext">Cancel the dispute.</span>
                             </div></th>
                             <th><div class="tooltip">&nbsp;&nbsp;&nbsp;?
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltiptext">If both parties finalize, payment will be sent to seller and title to buyer.</span>
                             </div></th>
                             <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltiptext">Cancel finalization.</span>
                             </div></th>
                             <th><div class="tooltip">?
-                                <span class="tooltiptext">If either party disputes the contract, the arbitrator can settle by distributing the money and ownership between the two parties.</span>
+                                <span class="tooltipright">If contract has been disputed, the arbiter can allocate assets within escrow between the two signatories.</span>
                             </div></th>
                         </tr>
                     </table>
@@ -311,7 +311,7 @@
             <button class="ownershipTransferButton" type="button" id="ownershipTransferButton">&nbsp;Transfer Ownership&nbsp;</button><br/>
         </div>
         </div>
-
+        
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
