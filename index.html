@@ -6,7 +6,6 @@
                 
                 <title>Fishare</title>
                 <link href="css/app.css" rel="stylesheet">
-                    
                     </head>
     <body background = "FishBackground.png">
         <header id="headerContainer">
@@ -17,17 +16,6 @@
                 <a href="#tradeFishTag">Fish Market</a>&nbsp;&nbsp;
                 <a href="#transferSharesTag">Transfer</a>&nbsp;&nbsp;
                 </header>
-        <div class="container" id="Introduction">
-            
-            <h3 class="panel-title">
-                Fishare is a fishery network.<br/>
-                <br/>Fishers can trade the rights to catch a share of fish.<br/><br/>
-                Anyone can trade fish in a virtual market.
-                </h3>
-            Note: The software runs on the Ethereum blockchain (Ropsten testnet), and currently requires a web3 supported digital wallet such as <a href="https://metamask.io/" target="_blank">Metamask<a/>.
-            <div id="registrationTag"></div>
-            
-        </div>
         <div class="container" id="Registration">
             <u><B>Register</B></u><br/><br/>
             In our virtual fishery anyone can register.  <br/><br/>
@@ -182,6 +170,7 @@
                     <table style="width:100%" id="escrowOpenBuyOrderTable">
                         <tr>
                             <th>ID</th>
+                            <th>Type</th>
                             <th>Amount (lbs)</th>
                             <th>Price (wei)</th>
                             <th>% Up Front</th>
@@ -193,6 +182,7 @@
                     <table style="width:100%" id="escrowOpenSellOrderTable">
                         <tr>
                             <th>ID</th>
+                            <th>Type</th>
                             <th>Amount (lbs)</th>
                             <th>Price (wei)</th>
                             <th>% Up Front</th>
@@ -218,7 +208,7 @@
             <div id="myModal" class="modal">
                 
                 <!-- Modal content -->
-                <div class="modal-content">
+                <div class="modal-content" id="modal-content">
                     <span class="close">&times;</span>
                     <b><output class="output modalHeader" type="text" id="modalHeader"/></output><br/></b><br/>
                     <output class="output modalHeader" type="text" id="modalPrice"/></output>&nbsp;&nbsp;&nbsp;
@@ -231,21 +221,23 @@
                     <output class="output modalHeader" type="text" id="modalSellerDisputed"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
                     <output class="output modalHeader" type="text" id="modalSellerReleased"/></output><br/>
                     <output class="output modalHeader" type="text" id="modalBuyer"/></output><br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<output class="output modalHeader" type="text" id="modalBuyerSigned"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<output class="output modalHeader" type="text" id="modalBuyerSigned"/></output>&nbsp;&nbsp;
                     <output class="output modalHeader" type="text" id="modalBuyerUnSigned"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
                     <output class="output modalHeader" type="text" id="modalBuyerDisputed"/></output>&nbsp;&nbsp;&nbsp;&nbsp;
                     <output class="output modalHeader" type="text" id="modalBuyerReleased"/></output><br/>
                     <output class="output modalHeader" type="text" id="modalArbiter"/></output><br/><br/>
                     
-                    
-                    
-                    
-                    <table style="width:100%" id="escrowOrderActionTableCounterPartySigs">
-                    </table>
                     <table style="width:100%" id="escrowOrderActionTable">
-                        
+                        <tr><td><input id="button1"></input></td>
+                            <td><input id="button2"></input></td>
+                            <td><input id="button3"></input></td>
+                            <td><input id="button4"></input></td>
+                            <td><input id="button5"></input></td>
+                            <td><input id="button6"></input></td>
+                            <td><input id="button7"></input></td>
+                        </tr>
                         <tr>
-                            <th align="center"><div class="tooltip">&nbsp;&nbsp;&nbsp;?
+                            <th><div class="tooltip">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?
                                 <span class="tooltiptext">Sign this contract.  For buyers payment will be put in escrow (minus up front %).  For sellers the title to the fish will be put in escrow.</span>
                             </div></th>
                             <th><div class="tooltip">?&nbsp;&nbsp;&nbsp;
@@ -312,6 +304,20 @@
         </div>
         </div>
         
+        
+        <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyAWvLg1VRrW1g9jq8CJmpNJlH4h3VOhKB4",
+                authDomain: "fishare-411a2.firebaseapp.com",
+                databaseURL: "https://fishare-411a2.firebaseio.com",
+                projectId: "fishare-411a2",
+                storageBucket: "fishare-411a2.appspot.com",
+                messagingSenderId: "897929791312"
+            };
+        firebase.initializeApp(config);
+            </script>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -324,7 +330,7 @@
     </body>
     <footer id="footerContainer">
         &nbsp;&nbsp;<a href="https://github.com/DarrenZal/Fishare" target="_blank">Source Code</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://medium.com/p/2b150a393ff1/edit" target="_blank">More Info</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://medium.com/@zaldarren/a-fair-way-to-share-fish-2b150a393ff1" target="_blank">More Info</a>
         &nbsp;&nbsp;&nbsp;&nbsp;Feedback: zaldarren@gmail.com
     </footer>
 </html>
