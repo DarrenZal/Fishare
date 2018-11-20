@@ -9,7 +9,6 @@ var totalEscrowOpenSellOrders = 0;
 var accountOrderLength = 0;
 var escrowOpenOrderLength = 0;
 var escrowOrderLength = 0;
-var escrowOrderActionsLength = 0;
 var cancelBuyOrder = function(arg) {
     return function() { App.removeBuyOrder(arg); };
 };
@@ -61,6 +60,7 @@ initWeb3: function() {
         App.web3Provider = web3.currentProvider;
     } else {
         // If no injected web3 instance is detected, user Infura
+        alert("This application runs on the Ethereum blockchain (ropsten testnet) and currently requires a web3 enabled wallet like Metamask");
         App.web3Provider = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/4b559a9b6ed64477a68c49e426efebeb"));
     }
     web3 = new Web3(App.web3Provider);
@@ -1818,9 +1818,15 @@ EscrowMarketBuy: function(event){
                                                                                                                                                          if (escrowOpenOrderTableCounter < escrowOpenOrderLength){
                                                                                                                                                          var row = document.getElementById('EscrowOpenOrderRow' + i);
                                                                                                                                                          row.childNodes[0].innerHTML = i;
-                                                                                                                                                         row.childNodes[1].innerHTML = amountsArray[i];
-                                                                                                                                                         row.childNodes[2].innerHTML = pricesArray[i];
-                                                                                                                                                         row.childNodes[3].innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         
+                                                                                                                                                         if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
+                                                                                                                                                         row.childNodes[1].innerHTML = "Sell";
+                                                                                                                                                         } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
+                                                                                                                                                         row.childNodes[1].innerHTML = "Buy";
+                                                                                                                                                         };
+                                                                                                                                                         row.childNodes[2].innerHTML = amountsArray[i];
+                                                                                                                                                         row.childNodes[3].innerHTML = pricesArray[i];
+                                                                                                                                                         row.childNodes[4].innerHTML = percentsUpFrontArray[i];
                                                                                                                                                          } else {
                                                                                                                                                          var row = table.insertRow(-1);
                                                                                                                                                          row.id = 'EscrowOpenOrderRow' + i;
@@ -1829,22 +1835,31 @@ EscrowMarketBuy: function(event){
                                                                                                                                                          var cell3 = row.insertCell(2);
                                                                                                                                                          var cell4 = row.insertCell(3);
                                                                                                                                                          var cell5 = row.insertCell(4);
+                                                                                                                                                         var cell6 = row.insertCell(5);
                                                                                                                                                          
                                                                                                                                                          cell1.innerHTML = i;
                                                                                                                                                          cell1.style.textAlign = "center";
-                                                                                                                                                         cell2.innerHTML = amountsArray[i];
+                                                                                                                                                         
+                                                                                                                                                         if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
+                                                                                                                                                         cell2.innerHTML = "Sell";
+                                                                                                                                                         } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
+                                                                                                                                                         cell2.innerHTML = "Buy";
+                                                                                                                                                         };
+                                                                                                                                                         
                                                                                                                                                          cell2.style.textAlign = "center";
-                                                                                                                                                         cell3.innerHTML = pricesArray[i];
+                                                                                                                                                         cell3.innerHTML = amountsArray[i];
                                                                                                                                                          cell3.style.textAlign = "center";
-                                                                                                                                                         cell4.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell4.innerHTML = pricesArray[i];
                                                                                                                                                          cell4.style.textAlign = "center";
+                                                                                                                                                         cell5.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell5.style.textAlign = "center";
                                                                                                                                                          var btn = document.createElement('input');
                                                                                                                                                          btn.type = "button";
                                                                                                                                                          btn.className = "tableBtn";
                                                                                                                                                          btn.value = "Actions";
                                                                                                                                                          btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
-                                                                                                                                                         cell5.appendChild(btn);
-                                                                                                                                                         cell5.style.textAlign = "center";
+                                                                                                                                                         cell6.appendChild(btn);
+                                                                                                                                                         cell6.style.textAlign = "center";
                                                                                                                                                          escrowOpenOrderLength++;
                                                                                                                                                          };
                                                                                                                                                          escrowOpenOrderTableCounter++;
@@ -1960,9 +1975,15 @@ EscrowMarketSell: function(event){
                                                                                                                                                          if (escrowOpenOrderTableCounter < totalEscrowOpenBuyOrders){
                                                                                                                                                          var row = document.getElementById('EscrowOpenOrderRow' + i);
                                                                                                                                                          row.childNodes[0].innerHTML = i;
-                                                                                                                                                         row.childNodes[1].innerHTML = amountsArray[i];
-                                                                                                                                                         row.childNodes[2].innerHTML = pricesArray[i];
-                                                                                                                                                         row.childNodes[3].innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         
+                                                                                                                                                         if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
+                                                                                                                                                         row.childNodes[1].innerHTML = "Sell";
+                                                                                                                                                         } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
+                                                                                                                                                         row.childNodes[1].innerHTML = "Buy";
+                                                                                                                                                         };
+                                                                                                                                                         row.childNodes[2].innerHTML = amountsArray[i];
+                                                                                                                                                         row.childNodes[3].innerHTML = pricesArray[i];
+                                                                                                                                                         row.childNodes[4].innerHTML = percentsUpFrontArray[i];
                                                                                                                                                          } else {
                                                                                                                                                          var row = table.insertRow(-1);
                                                                                                                                                          row.id = 'EscrowOpenOrderRow' + i;
@@ -1971,22 +1992,31 @@ EscrowMarketSell: function(event){
                                                                                                                                                          var cell3 = row.insertCell(2);
                                                                                                                                                          var cell4 = row.insertCell(3);
                                                                                                                                                          var cell5 = row.insertCell(4);
+                                                                                                                                                         var cell6 = row.insertCell(5);
                                                                                                                                                          
                                                                                                                                                          cell1.innerHTML = i;
                                                                                                                                                          cell1.style.textAlign = "center";
-                                                                                                                                                         cell2.innerHTML = amountsArray[i];
+                                                                                                                                                         
+                                                                                                                                                         if(sellersArray[i] == String(account) || (String(account) != buyersArray[i] && sellersArray[i] == blankAddress)){
+                                                                                                                                                         cell2.innerHTML = "Sell";
+                                                                                                                                                         } else if(buyersArray[i] == String(account) || (String(account) != sellersArray[i] && buyersArray[i] == blankAddress)){
+                                                                                                                                                         cell2.innerHTML = "Buy";
+                                                                                                                                                         };
                                                                                                                                                          cell2.style.textAlign = "center";
-                                                                                                                                                         cell3.innerHTML = pricesArray[i];
+                                                                                                                                                         
+                                                                                                                                                         cell3.style.innerHTML = amountsArray[i];
                                                                                                                                                          cell3.style.textAlign = "center";
-                                                                                                                                                         cell4.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell4.innerHTML = pricesArray[i];
                                                                                                                                                          cell4.style.textAlign = "center";
+                                                                                                                                                         cell5.innerHTML = percentsUpFrontArray[i];
+                                                                                                                                                         cell5.style.textAlign = "center";
                                                                                                                                                          var btn = document.createElement('input');
                                                                                                                                                          btn.type = "button";
                                                                                                                                                          btn.className = "tableBtn";
                                                                                                                                                          btn.value = "Actions";
                                                                                                                                                          btn.onclick = showEscrowActions(i, sellersArray[i], buyersArray[i], arbitersArray[i], pricesArray[i], amountsArray[i], percentsUpFrontArray[i], taxIncludedArray[i], sellerSigned[i], buyerSigned[i], sellerUnSigned[i], buyerUnSigned[i], sellerReleased[i], buyerReleased[i], buyerDisputed[i], sellerDisputed[i]);
-                                                                                                                                                         cell5.appendChild(btn);
-                                                                                                                                                         cell5.style.textAlign = "center";
+                                                                                                                                                         cell6.appendChild(btn);
+                                                                                                                                                         cell6.style.textAlign = "center";
                                                                                                                                                          totalEscrowOpenBuyOrders++;
                                                                                                                                                          };
                                                                                                                                                          escrowOpenOrderTableCounter++;
@@ -2337,45 +2367,45 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          
                          var table = document.getElementById("escrowOrderActionTable");
                          
-                         if (escrowOrderActionsLength == 0){
                          
                          
-                         var row = table.insertRow(0);
+                         var row = table.rows[0];
                          row.id = 'EscrowActionRow';
                          
-                         var cell1 = row.insertCell(0);
-                         var cell2 = row.insertCell(1);
-                         var cell3 = row.insertCell(2);
-                         var cell4 = row.insertCell(3);
-                         var cell5 = row.insertCell(4);
-                         var cell6 = row.insertCell(5);
-                         var cell7 = row.insertCell(6);
+                         var cell1 = row.cells[0];
+                         var cell2 = row.cells[1];
+                         var cell3 = row.cells[2];
+                         var cell4 = row.cells[3];
+                         var cell5 = row.cells[4];
+                         var cell6 = row.cells[5];
+                         var cell7 = row.cells[6];
                          
-                         var btn0 = document.createElement('input');
+                         
+                         var btn0 = document.getElementById('button1');
                          btn0.type = "button";
                          btn0.className = "btnEscrowModal";
                          btn0.value = "sign";
-                         var btn = document.createElement('input');
+                         var btn = document.getElementById('button2');
                          btn.type = "button";
                          btn.className = "btnEscrowModal";
                          btn.value = "unSign";
-                         var btn2 = document.createElement('input');
+                         var btn2 = document.getElementById('button3');
                          btn2.type = "button";
                          btn2.className = "btnEscrowModal";
                          btn2.value = "dispute";
-                         var btn3 = document.createElement('input');
+                         var btn3 = document.getElementById('button4');
                          btn3.type = "button";
                          btn3.className = "btnEscrowModal";
                          btn3.value = "unDispute";
-                         var btn4 = document.createElement('input');
+                         var btn4 = document.getElementById('button5');
                          btn4.type = "button";
                          btn4.className = "btnEscrowModal";
                          btn4.value = "finalize";
-                         var btn5 = document.createElement('input');
+                         var btn5 = document.getElementById('button6');
                          btn5.type = "button";
                          btn5.className = "btnEscrowModal";
                          btn5.value = "unFinalize";
-                         var btn6 = document.createElement('input');
+                         var btn6 = document.getElementById('button7');
                          btn6.type = "button";
                          btn6.className = "btnEscrowModal";
                          btn6.value = "arbitrate";
@@ -2384,18 +2414,21 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          
                          if(isSeller == true){
                          if(sellerSigned == false && seller == "0x0000000000000000000000000000000000000000"){
+                         btn0.style.background='#00fef7';
                          btn0.onclick = signEscrow(id, 0);
                          } else {
                          btn0.style.background='#ffffff';
                          btn0.onclick = alertText("You have already signed this escrow contract.");
                          }
                          if(sellerUnSigned == false && account == seller){
+                         btn.style.background='#00fef7';
                          btn.onclick = unsignEscrow(id);
                          } else {
                          btn.style.background='#ffffff';
                          btn.onclick = alertText("You have already unSigned this escrow contract.");
                          }
                          if(sellerDisputed == false && account == seller){
+                         btn2.style.background='#00fef7';
                          btn2.onclick = disputeEscrow(id);
                          btn3.style.background='#ffffff';
                          btn3.onclick = alertText("You have not disputed this contract.");
@@ -2407,11 +2440,13 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          } else {
                          btn2.style.background='#ffffff';
                          btn2.onclick = alertText("You have already disputed this escrow contract.");
+                         btn3.style.background='#00fef7';
                          btn3.onclick = unDisputeEscrow(id);
                          }
                          
                          
                          if(sellerReleased == false && account == seller){
+                         btn4.style.background='#00fef7';
                          btn4.onclick = releaseEscrow(id);
                          btn5.style.background='#ffffff';
                          btn5.onclick = alertText("You have not finalized this contract.");
@@ -2423,12 +2458,14 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          } else {
                          btn4.style.background='#ffffff';
                          btn4.onclick = alertText("You have already released this escrow contract.");
+                         btn5.style.background='#00fef7';
                          btn5.onclick = unreleaseEscrow(id);
                          }
                          
                          } else if (isBuyer == true){
                          if(buyerSigned == false && buyer == "0x0000000000000000000000000000000000000000"){
                          App.contracts.Fishare.getTaxRate((err, taxRate) => {
+                                                          btn0.style.background='#00fef7';
                                                           btn0.onclick = signEscrow(id, Math.floor((100+parseInt(taxRate))*price/100));
                                                           });
                          
@@ -2437,12 +2474,14 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          btn0.onclick = alertText("You have already signed this escrow contract.");
                          }
                          if(buyerUnSigned == false && account == buyer){
+                         btn.style.background='#00fef7';
                          btn.onclick = unsignEscrow(id);
                          } else {
                          btn.style.background='#ffffff';
                          btn.onclick = alertText("You have already unSigned this escrow contract.");
                          }
                          if(buyerDisputed == false && account == buyer){
+                         btn2.style.background='#00fef7';
                          btn2.onclick = disputeEscrow(id);
                          btn3.style.background='#ffffff';
                          btn3.onclick = alertText("You have not disputed this contract.");
@@ -2454,10 +2493,12 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          } else {
                          btn2.style.background='#ffffff';
                          btn2.onclick = alertText("You have already disputed this escrow contract.");
+                         btn3.style.background='#00fef7';
                          btn3.onclick = unDisputeEscrow(id);
                          }
                          
                          if(buyerReleased == false && account == buyer){
+                         btn4.style.background='#00fef7';
                          btn4.onclick = releaseEscrow(id);
                          btn5.style.background='#ffffff';
                          btn5.onclick = alertText("You have not finalized this contract.");
@@ -2469,12 +2510,14 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          } else {
                          btn4.style.background='#ffffff';
                          btn4.onclick = alertText("You have already released this escrow contract.");
+                         btn5.style.background='#00fef7';
                          btn5.onclick = unreleaseEscrow(id);
                          }
                          };
                          if(isArbiter == true){
                          if(buyerDisputed == true || sellerDisputed == true){
                          if(buyerSigned == true && sellerSigned == true){
+                         btn6.style.background='#00fef7';
                          btn6.onclick = arbitrateEscrow(id);
                          } else {
                          btn6.style.background='#ffffff';
@@ -2505,8 +2548,6 @@ popUpEscrowActions: function(id, seller, buyer, arbiter, price, amount, percents
                          cell7.appendChild(btn6);
                          cell7.style.textAlign = "center";
                          
-                         escrowOrderActionsLength++;
-                         };
                          
                          
                          });
