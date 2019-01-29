@@ -7,7 +7,7 @@
                 <title>Fishare</title>
                 <link href="css/app.css" rel="stylesheet">
                     </head>
-    <body background = "FishBackground.png">
+    <body>
         <header id="headerContainer">
             <br/>&nbsp;&nbsp;<h1 class="text-center">Fishare</h1>&nbsp;&nbsp;<h2 class="text-center"> A Fair way to share fish</h1>&nbsp;&nbsp;
                 <a href="#walletTag" onClick="App.showHomeScreen()">Wallet</a>&nbsp;&nbsp;
@@ -18,39 +18,41 @@
                 <a href="#transferSharesTag" onClick="App.showHomeScreen()">Transfer</a>&nbsp;&nbsp;
                 </header>
         </div>
-        <div class="container" id="transactionScreen" style="display:none;">
-            <div id="transactionsTag"></div>
-            <div id="transactions" style="display:none;">
-                <u><B>Transaction History</B></u><br/><br/>
-                <table style="width:100%" style="display:block;">
-                    <tr>
-                        <th width=24% align="left">Date (GMT)</th>
-                        <th width=10% align="left">Type</th>
-                        <th width=10% align="left">Asset</th>
-                        <th width=10% align="left">Amount</th>
-                        <th width=15% align="left">Price (wei)</th>
-                        <th width=15% align="center"></th>
-                    </tr>
-                </table>
-                <div id="transaction"  class="scrollingTable">
-                    <table style="width:100%" id="transactionTable" style="display:block;">
+
+        <div id="homeScreen">
+            <div class="container" id="transactionScreen" style="display:none;">
+                <div id="transactionsTag"></div>
+                <div id="transactions" style="display:none;">
+                    <u><B>Transaction History</B></u><br/><br/>
+                    <table style="width:100%"  >
+                        <tr>
+                            <th width=24% align="left">Date (GMT)</th>
+                            <th width=10% align="left">Type</th>
+                            <th width=10% align="left">Asset</th>
+                            <th width=10% align="left">Amount</th>
+                            <th width=15% align="left">Price (wei)</th>
+                            <th width=15% align="center"></th>
+                        </tr>
                     </table>
+                    <div id="transaction"  class="scrollingTable">
+                        <table style="width:100%" id="transactionTable"  >
+                        </table>
+                    </div>
+                </div>
+                <div id="transModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="transModal-content" id="modal-content">
+                        
+                        <span class="close">&times;</span>
+                        
+                        <table id="transModalDetails"  >
+                        </table>
+                        <button class="btnViewEtherscan" id="btnViewEtherscan">&nbsp;View on Etherscan&nbsp;</button>
+                    </div>
                 </div>
             </div>
-            <div id="transModal" class="modal">
-                <!-- Modal content -->
-                <div class="transModal-content" id="modal-content">
-                    
-                    <span class="close">&times;</span>
-                    
-                    <table id="transModalDetails" style="display:block;">
-                    </table>
-                    <button class="btnViewEtherscan" id="btnViewEtherscan">&nbsp;View on Etherscan&nbsp;</button>
-                </div>
-            </div>
-        </div>
-        <div id="homeScreen" style="display:block;">
-            <div id="walletTag" style="display:block;">
+
+            <div id="walletTag">
                 <div class="container">
                     <div id="transferSharesTag"></div>
                     <u><B>Wallet</B></u>&nbsp;&nbsp;&nbsp;
@@ -142,7 +144,7 @@
                                 <output class="output" type="number" id="marketSellValue"/></output><br/><br/>
                                 <button class="button marketSellExecute" type="button" id="marketSellExecute">Sell</button>
                             </div>
-                            <div id="idlimitsell" style="display:block;"><br/>
+                            <div id="idlimitsell"  ><br/>
                                 Sell Price:
                                 <input class="input" type="number" id="limitSellPrice"/></output><br/><br/>
                                 Number of Shares to sell:
@@ -362,11 +364,11 @@
                 </div>
             </div>
             
-            <div class="container" style="display:block;">
+            <div class="container"  >
                 Tax collection address:&nbsp;<a href="https://ropsten.etherscan.io/address/0x9c2e775af7d6c499a3e243adf7b4b273deee193b" target="blank" id="taxAddress"></a>
             </div>
         </div>
-        
+
         
         <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
         <script>
