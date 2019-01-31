@@ -10,7 +10,6 @@
     <body>
         <header id="headerContainer">
             <br/>&nbsp;&nbsp;<h1 class="text-center">Fishare</h1>&nbsp;&nbsp;<h2 class="text-center"> A Fair way to share fish</h1>&nbsp;&nbsp;</header>
-        </div>
         
         <div id="homeScreen">
             <div class="container" id="transactionScreen" style="display:none;">
@@ -57,8 +56,8 @@
                 <u><B>Wallet</B></u>&nbsp;&nbsp;&nbsp;
                 <br/><div id="showPending" style="display:none;"><div class="loader"></div>&nbsp;&nbsp;&nbsp;&nbsp;Transaction Pending</div><br/>
                 <div id="tester" style="display:none;">
-                    It appears you're browser does not have an ethereum wallet such as <a href="https://metamask.io/" target="blank" >Metamask</a>.<br/>
-                    Feel frxee to play around with the tester account:<br/><br/>
+                    You're browser does not have an ethereum wallet such as <a href="https://metamask.io/" target="blank" >Metamask</a>.<br/>
+                    Feel free to play around with the tester account:<br/><br/>
                 </div>
                 Address: <output class="output" type="text" id="account"/></output><br/>
                 Ether balance:<output class="output" type="number" id="etherBalance"/></output><br/>
@@ -84,7 +83,7 @@
                 <input type="number" id="shares"></input>&nbsp;&nbsp;
                 <button class="button buy" type="button" id="buy">&nbsp;Claim Shares&nbsp;</button><br/><br/>
             </div>
-            <div class="container" id="Trade">
+            <div class="containerTradeShares" id="Trade">
                 <br/><u><B>Share Market</B></u>&nbsp;&nbsp;Buy or sell the rights to catch fish.<br/><br/>
                 <div id="container">
                     <button class="button tradeBuy" type="button" id="tradeBuy" >Buy</button>
@@ -158,7 +157,7 @@
                     <canvas id="shareOrderChart"></canvas>
                 </div>
             </div>
-            <div class="container" id="Market">
+            <div class="containerTradeOwnership" id="Market">
                 <br/><u><B>Fish Market</B></u>&nbsp;&nbsp; Buy or sell the ownership of fish.<br/><br/>
                 The market supports escrow, arbitration, and automatic tax collection.<br/><br/>
                 <div id="container4" class="container4">
@@ -349,7 +348,7 @@
             </div>
         </div>
         
-        <div class="container"  >
+        <div class="containerTaxAddress"  >
             Tax collection address:&nbsp;<a href="https://ropsten.etherscan.io/address/0x9c2e775af7d6c499a3e243adf7b4b273deee193b" target="blank" id="taxAddress"></a>
         </div>
         </div>
