@@ -60,9 +60,9 @@
                     Feel free to play around with the tester account:<br/><br/>
                 </div>
                 Address: <output class="output" type="text" id="account"/></output><br/>
-                Ether balance:<output class="output" type="number" id="etherBalance"/></output><br/>
-                Catch Share balance:<output class="output" type="number" id="shareBalance"/></output><br/>
-                Fish balance:<output class="output" type="number" id="numFishOwn"/></output><br/></br>
+                Ether balance:<output class="output" type="number" id="etherBalance"/></output>
+                Catch Share balance:<br/><output class="output" type="number" id="shareBalance"/></output><br/>
+                Fish balance:<br><output class="output" type="number" id="numFishOwn"/></output><br/></br>
                 <button class="transactionButton" id="transactionButton" >&nbsp;Transaction History&nbsp;</button>
                 <button class="viewAccountonEtherscan" id="viewAccountonEtherscan">&nbsp;View on Etherscan&nbsp;</button>
             </div>
@@ -346,11 +346,22 @@
                 <input type="text" id="transferOwnershipAddress"/></input><br/><br/>
                 <button class="ownershipTransferButton" type="button" id="ownershipTransferButton">&nbsp;Transfer Ownership&nbsp;</button><br/>
             </div>
+            
+            
+            <div class="container">
+                Tax collection address:&nbsp;<br/>
+                <a href="https://ropsten.etherscan.io/address/0x9c2e775af7d6c499a3e243adf7b4b273deee193b" target="blank" id="taxAddress"></a>
+            </div>
+            
+            <footer id="footerContainer">
+                &nbsp;&nbsp;<a href="https://github.com/DarrenZal/Fishare" target="_blank">Source Code</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://medium.com/@zaldarren/a-fair-way-to-share-fish-2b150a393ff1" target="_blank">More Info</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;Feedback: zaldarren@gmail.com
+                
+            </footer>
         </div>
         
-        <div class="containerTaxAddress"  >
-            Tax collection address:&nbsp;<a href="https://ropsten.etherscan.io/address/0x9c2e775af7d6c499a3e243adf7b4b273deee193b" target="blank" id="taxAddress"></a>
-        </div>
+        
         </div>
         
         
@@ -375,13 +386,6 @@
         <script src="js/web3.min.js"></script>
         <script src="js/getTransactionReceiptMined.js"></script>
         <script src="js/app.js"></script>
-        
-        
     </body>
-    <footer id="footerContainer">
-        &nbsp;&nbsp;<a href="https://github.com/DarrenZal/Fishare" target="_blank">Source Code</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://medium.com/@zaldarren/a-fair-way-to-share-fish-2b150a393ff1" target="_blank">More Info</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;Feedback: zaldarren@gmail.com
-        &nbsp;&nbsp;&nbsp;&nbsp;*this application runs on the Ropsten testnet and is for educational purposes only
-    </footer>
 </html>
+
