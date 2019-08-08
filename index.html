@@ -51,7 +51,7 @@
                     <div id="confirmedText">Transaction Confirmed.</div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" id="walletConatiner">
                 <div id="transferSharesTag"></div>
                 <u><B>Wallet</B></u>&nbsp;&nbsp;&nbsp;
                 <br/><div id="showPending" style="display:none;"><div class="loader"></div>&nbsp;&nbsp;&nbsp;&nbsp;Transaction Pending</div><br/>
@@ -59,26 +59,28 @@
                     You're browser does not have an ethereum wallet such as <a href="https://metamask.io/" target="blank" >Metamask</a>.<br/>
                     Feel free to play around with the tester account:<br/><br/>
                 </div>
-                Address: <output class="output" type="text" id="account"/></output><br/>
-                Ether balance:<output class="output" type="number" id="etherBalance"/></output>
-                Catch Share balance:<br/><output class="output" type="number" id="shareBalance"/></output><br/>
-                Fish balance:<br><output class="output" type="number" id="numFishOwn"/></output><br/></br>
+                Address:<br/><output class="output" type="text" id="account"/></output><br/>
+                Ether balance:<output class="output" type="number" id="etherBalance"/></output><br/>
+                Catch Share balance:<output class="output" type="number" id="shareBalance"/></output><br/>
+                Fish balance:<output class="output" type="number" id="numFishOwn"/></output><br/></br>
                 <button class="transactionButton" id="transactionButton" >&nbsp;Transaction History&nbsp;</button>
                 <button class="viewAccountonEtherscan" id="viewAccountonEtherscan">&nbsp;View on Etherscan&nbsp;</button>
             </div>
-            <div class="container" id="Registration">
+            <div class="container" id="registrationContainer">
                 <u><B>Register</B></u><br/><br/>
                 In our virtual fishery anyone can register.  <br/><br/>
                 <button class="button register" type="button" id="register">&nbsp;Register&nbsp;</button><br/><br/>
                 Registration status:<output class="output" type="text" id="registrationstatus"/></output><br/><br/>
             </div>
-            <div class="container" id="BuyShares">
-                <u><B>Claim Quota Shares</B></u><br/><br/>
+            <div class="container" id="ShareInfo">
+                <u><B>Economy Statistics:</B></u><br/><br/>
                 Total number of oustanding shares: 1,000,000<br/><br/>
                 Total fishing quota for 2019 (lbs): 1,000,000<br/><br/>
                 Lbs fish per share: 1<br/><br/>
                 Number of unclaimed Shares:<output class="output" type="number" id="available"/></output><br/><br/>
-                Shares per account limit: 1000<br/><br/>
+            </div>
+            <div class="container" id="BuyShares">
+                <u><B>Claim Quota Shares</B></u><br/><br/>
                 <strong>Number of fish quota shares to claim</strong>:<br/><br/>
                 <input type="number" id="shares"></input>&nbsp;&nbsp;
                 <button class="button buy" type="button" id="buy">&nbsp;Claim Shares&nbsp;</button><br/><br/>
@@ -153,8 +155,8 @@
                 </div>
                 <div id="orderChart" style="display:none;">
                     <output class="output" type="text" id="noShareOrderText"/></output><br/>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-                    <canvas id="shareOrderChart"></canvas>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" id="chart"></script>
+                    <canvas id="shareOrderChart" style="height:40px;"></canvas>
                 </div>
             </div>
             <div class="containerTradeOwnership" id="Market">
@@ -348,7 +350,7 @@
             </div>
             
             
-            <div class="container">
+            <div class="container" id="TaxAddressContainer">
                 Tax collection address:&nbsp;<br/>
                 <a href="https://ropsten.etherscan.io/address/0x9c2e775af7d6c499a3e243adf7b4b273deee193b" target="blank" id="taxAddress"></a>
             </div>
@@ -388,4 +390,3 @@
         <script src="js/app.js"></script>
     </body>
 </html>
-
