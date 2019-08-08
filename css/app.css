@@ -1,20 +1,21 @@
 html { height: 100%; }
 
 @media only screen and (max-width: 1000px) {
+    .walletConatiner, .registrationConatiner
     #homeScreen, #walletTag, .containerTradeShares, .containerTradeOwnership, .container, .Market, escrowBuy {
         display: block;
         float: none;
         width: 100%;
-        max-width: 100%;
+        
     }
     .output, tableBtn, #orderTable, escrowSignedOrderTable{
-        font-size: 36px;
+        font-size: 3.2vw;
     }
-    button{ 
-        font-size: 50px;
+    button{
+        font-size: 3.2vw;
     }
     body{
-        font-size: 30px;
+        font-size: 3.2vw;
         font-family: "Open Sans", sans-serif;
         background-image: url('./FishBackground.jpg');
         background-repeat: repeat;
@@ -24,9 +25,10 @@ html { height: 100%; }
         min-height:100%;
         position:relative;
         padding-bottom: 20px;
+        width: 100%;
     }
     #headerContainer{
-        height: 120px;
+        height: 10%;
         width: 100%;
         position: relative;
         background-color: #273e55;
@@ -39,7 +41,7 @@ html { height: 100%; }
     .tableBtn{
         background-color: #AAA;
         color: #fff;
-        font-size: 40px;
+        font-size: 3.2vw;
         padding: 0px;
         width: 100%;
         border-radius: 10px;
@@ -47,7 +49,7 @@ html { height: 100%; }
     #tradeBuy, #escrowBuy{
         width: 49%;
         height: 60px;
-        font-size: 50px;
+        font-size: 3.2vw;
         padding: 5px;
         border-radius: 5px;
         background-color: #008e79;
@@ -55,14 +57,14 @@ html { height: 100%; }
     #tradeSell, #escrowSell{
         width: 49%;
         height: 60px;
-        font-size: 50px;
+        font-size: 3.2vw;
         padding: 5px;
         border-radius: 5px;
         background-color: #ff5866;
     }
     h2 {
         color: #e1fbeb;
-        font-size: 40px;
+        font-size: 3.2vw;
     }
     h1,h2 {
         display: inline-block;
@@ -74,13 +76,13 @@ html { height: 100%; }
     h1 {
         color: #07f512;
     }
-    #account, #taxAddress {
+    #account{
         font-size: 3.2vw;
+        margin-left: -1em;
     }
     #footerContainer {
         height: 35px;
         padding-bottom: 1px;
-        padding-top: 3px;
         width: 100%;
         z-index: 0;
         background-color: #273e55;
@@ -98,13 +100,419 @@ html { height: 100%; }
         display: block;
         float: none;
         width: 100%;
-        max-width: 100%;
+    }
+    .container, #trade{
+        background-color: #273e55;
+        border-radius: 25px;
+        margin: 1em;
+        padding: 1em;
+        margin-left: 0%;
+        margin-right: 0%;
+        color: #AAA;
+    }
+    
+    #taxAddress{
+        font-size: 3.2vw;
+    }
+    .containerTradeShares{
+        background-color: #273e55;
+        border-radius: 25px;
+        color: #AAA;
+        margin-top: 1em;
+    }
+    .containerTradeOwnership{
+        background-color: #273e55;
+        border-radius: 25px;
+        padding: 1em;
+        margin-top: 2em;
+        margin-bottom: 1em;
+        color: #AAA;
+    }
+    #TaxAddressContainer{
+        margin-top: 1em;
+    }
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 50px;
+        font-weight: bold;
+    }
+    #headerContainer .menuHolder a p, .menuLines {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+    }
+    
+    #homeScreen {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #walletTag {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #menuText {
+        margin-right: 23px;
+    }
+    
+    
+    .containerMarket{
+        background-color: #273e55;
+        border-radius: 25px;
+        color: #AAA;
+        margin: 1em;
+        padding: 1em;
+    }
+    
+    #walletConatiner{
+        margin-top: 2em;
+        margin-right: 0px;
+    }
+    
+    label {
+        display: inline-block;
+        width: 100px;
+    }
+    
+    input {
+        width: 100px;
+        padding: 5px;
+        font-size: 16px;
+    }
+    table, td {
+        border: 0px solid black;
+    }
+    #transferaddress {
+        width: 400px;
+    }
+    
+    output {
+        width: 300px;
+        padding: 5px;
+        font-size: 16px;
+    }
+    a {
+        color: #AAA;
+    }
+    button {
+        padding: 5px;
+        border-radius: 12px;
+        background-color: #07f512;
+        border-color: #07f512;
+    }
+    
+    h3 {
+        font-weight: normal;
+        color: #AAA;
+        font-size: 24px;
+    }
+    
+    .buy {
+        border-radius: 12px;
+        background-color: #57b431;
+    }
+    
+    
+    .sell {
+        border-radius: 12px;
+        background-color: #ff0052;
+    }
+    
+    .refresh {
+        border-radius: 12px;
+        background-color: #00f8fc;
+    }
+    #marketBuy, #escrowMarketBuy{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #273e55;
+        color: #ffffff;
+    }
+    #limitBuy, #escrowLimitBuy{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #273e55;
+    }
+    #limitSell, #escrowLimitSell{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #273e55;
+    }
+    #marketSell, #escrowMarketSell{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #273e55;
+        color: #ffffff;
+    }
+    #marketBuyExecute, #escrowMarketBuyExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #008e79;
+    }
+    #marketSellExecute, #escrowMarketSellExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ff285a;
+    }
+    #limitSellExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ff285a;
+    }
+    #limitBuyExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #008e79;
+    }
+    #transfer{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #bce08d;
+    }
+    #ownershipTransferButton{
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #bce08d;
+    }
+    #sale{
+        width: 23%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #bce08d;
+    }
+    #transferaddress{
+        width: 310px;
+        font-size: 12px;
+    }
+    #transfershares{
+        width: 38%;
+    }
+    .phi{
+        width: 61.8%;
+    }
+    #transferOwnership{
+        width: 38%;
+    }
+    #transferOwnershipAddress{
+        width: 310px;
+        font-size: 12px;
+    }
+    .date{
+        width: 28%;
+    }
+    #container{
+        text-align: left;
+    }
+    #container2{
+        text-align: left;
+    }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        overflow-y: scroll;
+    }
+    
+    .modalHeader{
+        text-align: center;
+        width:100%;
+        color: black;
+    }
+    
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    
+    .pendingModal-content{
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+    }
+    
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    
+    
+    .btn{
+        background-color: #AAA;
+        color: black;
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 12px;
+    }
+    
+    .btnEscrowModal{
+        background-color: #00fef7;
+        color: black;
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 12px;
+    }
+    
+    /* Tooltip container */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+        left: 50%;
+        visibility: hidden;
+        background-color: #273e55;
+        color: #AAA;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        top: 100%;
+        width: 300px;
+        z-index: 1;
+    }
+    
+    .tooltip .tooltipright{
+        right: 100%;
+        visibility: hidden;
+        background-color: #273e55;
+        color: #AAA;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        top: 100%;
+        width: 300px;
+        z-index: 1;
+    }
+    
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext,.tooltip:hover .tooltipright{
+        visibility: visible;
+    }
+    
+    
+    .check{
+        transform: scale(1.25);
+        width: 20px;
     }
 }
 
 
 
 @media only screen and (min-width: 1000px) {
+    #Market{
+        min-width: 95%;
+    }
+    .container{
+        background-color: #273e55;
+        border-radius: 25px;
+        margin: 1em;
+        padding: 1em;
+        margin-left: auto;
+        margin-right: auto;
+        color: #AAA;
+        min-width: 46%;
+        max-width: 46%;
+    }
+    #TaxAddressContainer{
+        max-height: 35px;
+    }
+    #BuyShares{
+        margin-top: -180px;
+        height: 130px;
+        margin-left: 10px;
+        min-width: 30%;
+        max-width: 30%;
+    }
+    #ShareInfo{
+        height: 330px;
+        min-width: 60%;
+    }
+    #Trade{
+        min-width: 95%;
+        max-width: 95%;
+        min-height: 900px;
+    }
+    #walletConatiner{
+        margin-top: 16em;
+    }
+    #registrationContainer{
+        max-height: 150px;
+        padding-top: 10px;
+        min-width: 30%;
+        max-width: 30%;
+        margin-left: 10px;
+    }
+    #walletConatiner{
+        min-width: 95%;
+    }
     body {
         font-family: "Open Sans", sans-serif;
         background-image: url('./FishBackground.jpg');
@@ -184,354 +592,344 @@ html { height: 100%; }
         position: absolute;
         left: 0 ; right: 0; bottom: 0;
     }
-}
-
-#headerContainer .menuHolder a p, .menuLines {
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-}
-
-#homeScreen {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#walletTag {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#menuText {
-    margin-right: 23px;
-}
-
-.container{
-    background-color: #273e55;
-    border-radius: 25px;
-    margin: 1em;
-    padding: 1em;
-    color: #AAA;
-    min-width: 300px;
-}
-.containerTradeShares{
-    background-color: #273e55;
-    border-radius: 25px;
-    margin: 1em;
-    padding: 1em;
-    color: #AAA;
-    min-width: 320px; */
-    max-width: 5000px; */
-}
-.containerTradeOwnership{
-    background-color: #273e55;
-    border-radius: 25px;
-    margin: 1em;
-    padding: 1em;
-    color: #AAA;
-    min-width: 320px;
-}
-
-
-.containerMarket{
-    background-color: #273e55;
-    border-radius: 25px;
-    margin: 1em;
-    padding: 1em;
-    color: #AAA;
-}
-
-
-label {
-    display: inline-block;
-    width: 100px;
-}
-
-input {
-    width: 100px;
-    padding: 5px;
-    font-size: 16px;
-}
-table, td {
-    border: 0px solid black;
-}
-#transferaddress {
-    width: 400px;
-}
-
-output {
-    width: 300px;
-    padding: 5px;
-    font-size: 16px;
-}
-a {
-    color: #AAA;
-}
-button {
-    padding: 5px;
-    border-radius: 12px;
-    background-color: #07f512;
-    border-color: #07f512;
-}
-
-h3 {
-    font-weight: normal;
-    color: #AAA;
-    font-size: 24px;
-}
-
-.buy {
-    border-radius: 12px;
-    background-color: #57b431;
-}
-
-
-.sell {
-    border-radius: 12px;
-    background-color: #ff0052;
-}
-
-.refresh {
-    border-radius: 12px;
-    background-color: #00f8fc;
-}
-#marketBuy, #escrowMarketBuy{
-    width: 49%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #273e55;
-    color: #ffffff;
-}
-#limitBuy, #escrowLimitBuy{
-    width: 49%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: #273e55;
-}
-#limitSell, #escrowLimitSell{
-    width: 49%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: #273e55;
-}
-#marketSell, #escrowMarketSell{
-    width: 49%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #273e55;
-    color: #ffffff;
-}
-#marketBuyExecute, #escrowMarketBuyExecute{
-    width: 50%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #008e79;
-}
-#marketSellExecute, #escrowMarketSellExecute{
-    width: 50%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #ff285a;
-}
-#limitSellExecute{
-    width: 50%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #ff285a;
-}
-#limitBuyExecute{
-    width: 50%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #008e79;
-}
-#transfer{
-    width: 50%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #bce08d;
-}
-#ownershipTransferButton{
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #bce08d;
-}
-#sale{
-    width: 23%;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #bce08d;
-}
-#transferaddress{
-    width: 310px;
-    font-size: 12px;
-}
-#transfershares{
-    width: 38%;
-}
-.phi{
-    width: 61.8%;
-}
-#transferOwnership{
-    width: 38%;
-}
-#transferOwnershipAddress{
-    width: 310px;
-    font-size: 12px;
-}
-.date{
-    width: 28%;
-}
-#container{
-    text-align: left;
-}
-#container2{
-    text-align: left;
-}
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    overflow-y: scroll;
-}
-
-.modalHeader{
-    text-align: center;
-    width:100%;
-    color: black;
-}
-
-/* Modal Content */
-.modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.pendingModal-content{
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 40%;
-}
-
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
-
-.btn{
-    background-color: #AAA;
-    color: black;
-    font-size: 18px;
-    padding: 5px;
-    border-radius: 12px;
-}
-
-.btnEscrowModal{
-    background-color: #00fef7;
-    color: black;
-    font-size: 18px;
-    padding: 5px;
-    border-radius: 12px;
-}
-
-/* Tooltip container */
-.tooltip {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip .tooltiptext {
-    left: 50%;
-    visibility: hidden;
-    background-color: #273e55;
-    color: #AAA;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    #headerContainer .menuHolder a p, .menuLines {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+    }
     
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    top: 100%;
-    width: 300px;
-    z-index: 1;
-}
-
-.tooltip .tooltipright{
-    right: 100%;
-    visibility: hidden;
-    background-color: #273e55;
-    color: #AAA;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    #homeScreen {
+        display: flex;
+        flex-wrap: wrap;
+    }
     
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    top: 100%;
-    width: 300px;
-    z-index: 1;
+    #walletTag {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    #menuText {
+        margin-right: 23px;
+    }
+    
+    
+    .containerTradeShares{
+        background-color: #273e55;
+        border-radius: 25px;
+        margin: 1em;
+        padding: 1em;
+        color: #AAA;
+        min-width: 320px; */
+        max-width: 5000px; */
+    }
+    .containerTradeOwnership{
+        background-color: #273e55;
+        border-radius: 25px;
+        margin: 1em;
+        padding: 1em;
+        color: #AAA;
+        min-width: 320px;
+    }
+    
+    
+    .containerMarket{
+        background-color: #273e55;
+        border-radius: 25px;
+        margin: 1em;
+        padding: 1em;
+        color: #AAA;
+    }
+    
+    
+    label {
+        display: inline-block;
+        width: 100px;
+    }
+    
+    input {
+        width: 100px;
+        padding: 5px;
+        font-size: 16px;
+    }
+    table, td {
+        border: 0px solid black;
+    }
+    #transferaddress {
+        width: 400px;
+    }
+    
+    output {
+        width: 300px;
+        padding: 5px;
+        font-size: 16px;
+    }
+    a {
+        color: #AAA;
+    }
+    button {
+        padding: 5px;
+        border-radius: 12px;
+        background-color: #07f512;
+        border-color: #07f512;
+    }
+    
+    h3 {
+        font-weight: normal;
+        color: #AAA;
+        font-size: 24px;
+    }
+    
+    .buy {
+        border-radius: 12px;
+        background-color: #57b431;
+    }
+    
+    
+    .sell {
+        border-radius: 12px;
+        background-color: #ff0052;
+    }
+    
+    .refresh {
+        border-radius: 12px;
+        background-color: #00f8fc;
+    }
+    #marketBuy, #escrowMarketBuy{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #273e55;
+        color: #ffffff;
+    }
+    #limitBuy, #escrowLimitBuy{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #273e55;
+    }
+    #limitSell, #escrowLimitSell{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #273e55;
+    }
+    #marketSell, #escrowMarketSell{
+        width: 49%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #273e55;
+        color: #ffffff;
+    }
+    #marketBuyExecute, #escrowMarketBuyExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #008e79;
+    }
+    #marketSellExecute, #escrowMarketSellExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ff285a;
+    }
+    #limitSellExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #ff285a;
+    }
+    #limitBuyExecute{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #008e79;
+    }
+    #transfer{
+        width: 50%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #bce08d;
+    }
+    #ownershipTransferButton{
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #bce08d;
+    }
+    #sale{
+        width: 23%;
+        height: 30px;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #bce08d;
+    }
+    #transferaddress{
+        width: 310px;
+        font-size: 12px;
+    }
+    .phi{
+        width: 61.8%;
+    }
+    #transferOwnership{
+        width: 38%;
+    }
+    #transferOwnershipAddress{
+        width: 310px;
+        font-size: 12px;
+    }
+    .date{
+        width: 28%;
+    }
+    #container{
+        text-align: left;
+    }
+    #container2{
+        text-align: left;
+    }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        overflow-y: scroll;
+    }
+    
+    .modalHeader{
+        text-align: center;
+        width:100%;
+        color: black;
+    }
+    
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    
+    .pendingModal-content{
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+    }
+    
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    
+    
+    .btn{
+        background-color: #AAA;
+        color: black;
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 12px;
+    }
+    
+    .btnEscrowModal{
+        background-color: #00fef7;
+        color: black;
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 12px;
+    }
+    
+    /* Tooltip container */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+        left: 50%;
+        visibility: hidden;
+        background-color: #273e55;
+        color: #AAA;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        top: 100%;
+        width: 300px;
+        z-index: 1;
+    }
+    
+    .tooltip .tooltipright{
+        right: 100%;
+        visibility: hidden;
+        background-color: #273e55;
+        color: #AAA;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        top: 100%;
+        width: 300px;
+        z-index: 1;
+    }
+    
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext,.tooltip:hover .tooltipright{
+        visibility: visible;
+    }
+    
+    
+    .check{
+        transform: scale(1.25);
+        width: 20px;
+    }
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext,.tooltip:hover .tooltipright{
-    visibility: visible;
-}
-
-
-.check{
-    transform: scale(1.25);
-    width: 20px;
-}
 
 .loader {
     border: 8px solid #00fef6;
@@ -553,5 +951,3 @@ h3 {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-
